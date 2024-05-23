@@ -1,4 +1,4 @@
-package peakle_time.peakle_time;
+package peakle_time.peakle_time.global;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
