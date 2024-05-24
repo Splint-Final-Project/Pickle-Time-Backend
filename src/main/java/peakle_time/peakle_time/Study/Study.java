@@ -44,16 +44,20 @@ public class Study extends BaseEntity {
     @Column(name = "longitude")
     private double longitude;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @Embedded
     private Location location;
 
-    public Study(Member member, String title, String content, double latitude, double longitude, Location location) {
+    public Study(Member member, String title, String content, double latitude, double longitude, Status status,Location location) {
         this.member = member;
         this.title = title;
         this.content = content;
         this.viewCount = 0;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.status = status;
         this.location = location;
     }
 }

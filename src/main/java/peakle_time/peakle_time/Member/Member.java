@@ -20,6 +20,8 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String loginId;
+
     @Column(nullable = false)
     private String nickname;
 
@@ -37,4 +39,7 @@ public class Member extends BaseEntity {
     @OneToMany
     @JoinColumn(name = "memberId")
     private List<Participant> participants;
+
+    // 생성자 혹은 빌더
+
 }
