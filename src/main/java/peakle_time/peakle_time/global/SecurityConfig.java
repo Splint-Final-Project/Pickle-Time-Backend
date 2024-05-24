@@ -1,4 +1,4 @@
-package peakle_time.peakle_time.global.auth;
+package peakle_time.peakle_time.global;
 
 
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,7 @@ public class SecurityConfig {
      *
      */
     private static final String[] IGNORE_URL = {
-            "/", "/oauth/login/**", "/signup"
+            "/", "/oauth/**", "/signup", "/error", "/favicon.ico"
     };
 
     @Bean
@@ -31,6 +31,7 @@ public class SecurityConfig {
                         (request) -> request
                                 .requestMatchers(IGNORE_URL).permitAll()
                                 .anyRequest().authenticated()
+
                 );
 
         return http.build();
