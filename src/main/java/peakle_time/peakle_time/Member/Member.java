@@ -1,9 +1,7 @@
 package peakle_time.peakle_time.Member;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import peakle_time.peakle_time.global.BaseEntity;
 import peakle_time.peakle_time.Image.Image;
 import peakle_time.peakle_time.global.Location;
@@ -14,6 +12,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 public class Member extends BaseEntity {
 
     @Id

@@ -1,9 +1,13 @@
 package peakle_time.peakle_time.Member;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peakle_time.peakle_time.Member.dto.JoinRequest;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -31,8 +35,42 @@ public class MemberService {
         return memberRepository.existsByNickname(nickname);
     }
 
+    public Member join(JoinRequest request) {
+        if (checkLoginIdDuplicate(request.loginId()) ) {
+            throw new IllegalArgumentException("이미 존재하는 로그인 아이디입니다.");
+        }
+        if (checkNicknameDuplicate(request.nickname()) ) {
+            throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+        }
 
+        //String encodedPassword = bCryptPasswordEncoder.encode(request.password());
 
+        Member member = Member.builder()
+                .loginId(request.loginId())
+                .password(request.password())
+                .nickname(request.nickname())
+                .email(request.email())
+                .age(request.age())
+                .build();
 
+        return memberRepository.save(member);
+    }
+    public Member login(String loginId, String password) {
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 로그인 아이디가 존재하지 않습니다."));
 
+//        if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
+//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+//        }
+
+        return member;
+    }
+
+    public Optional<Member> findById(Long id) {
+        return memberRepository.findById(id);
+    }
+
+    public List<Member> findAll() {
+        return memberRepository.findAll();
+    }
 }
