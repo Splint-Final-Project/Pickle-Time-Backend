@@ -36,11 +36,14 @@ public class MemberService {
     }
 
     public Member join(JoinRequest request) {
-        if (checkLoginIdDuplicate(request.loginId()) ) {
+        if (checkLoginIdDuplicate(request.loginId())) {
             throw new IllegalArgumentException("이미 존재하는 로그인 아이디입니다.");
         }
-        if (checkNicknameDuplicate(request.nickname()) ) {
+        if (checkNicknameDuplicate(request.nickname())) {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+        }
+        if (!request.password().equals(request.checkPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
         //String encodedPassword = bCryptPasswordEncoder.encode(request.password());
@@ -50,11 +53,12 @@ public class MemberService {
                 .password(request.password())
                 .nickname(request.nickname())
                 .email(request.email())
-                .age(request.age())
+                .company(request.company())
                 .build();
 
         return memberRepository.save(member);
     }
+
     public Member login(String loginId, String password) {
         Member member = memberRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 로그인 아이디가 존재하지 않습니다."));

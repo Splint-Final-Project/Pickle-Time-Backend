@@ -27,14 +27,15 @@ public class Member extends BaseEntity {
 
     private String email;
     private String password;
-    private Long age;
 
     @OneToOne
     private Image image;
 
-    @Embedded
-    private Location location;
+//    @Embedded
+//    private Location location;
+    private String company;
     private String socialType;
+
 
     @OneToMany
     @JoinColumn(name = "memberId")

@@ -16,9 +16,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/join")
-    public ResponseEntity<?> join(@RequestBody JoinRequest request) {
+    public ResponseEntity<?> join(@RequestBody JoinRequest joinRequest) {
         try {
-            memberService.join(request);
+            memberService.join(joinRequest);
             return ResponseEntity.ok("회원가입 성공");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -41,7 +41,7 @@ public class MemberController {
         return member.isPresent() ? ResponseEntity.ok(member.get()) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Member>> getAllMembers() {
         List<Member> members = memberService.findAll();
         return ResponseEntity.ok(members);
