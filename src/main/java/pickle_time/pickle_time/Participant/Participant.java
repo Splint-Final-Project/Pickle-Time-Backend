@@ -1,11 +1,13 @@
-package peakle_time.peakle_time.Participant;
+package pickle_time.pickle_time.Participant;
 
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
-import peakle_time.peakle_time.global.BaseEntity;
-import peakle_time.peakle_time.Member.Member;
-import peakle_time.peakle_time.Study.Study;
+import lombok.NoArgsConstructor;
+import pickle_time.pickle_time.global.BaseEntity;
+import pickle_time.pickle_time.Member.Member;
+import pickle_time.pickle_time.Pickle.Pickle;
 
 @Entity
 @Getter
@@ -19,17 +21,17 @@ public class Participant extends BaseEntity {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "studyId")
-    private Study study;
+    @JoinColumn(name = "pickleId")
+    private Pickle pickle;
 
     @Column(name = "role")
     private String role;
 
     public Participant() {}
 
-    public Participant(Member member, Study study, String role) {
+    public Participant(Member member, Pickle pickle, String role) {
         this.member = member;
-        this.study = study;
+        this.pickle = pickle;
         this.role = role;
     }
 }
