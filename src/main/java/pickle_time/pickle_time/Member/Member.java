@@ -25,8 +25,6 @@ public class Member extends BaseEntity {
 
     private String password;
 
-    private String image;
-
     private String company;
     private String socialType;
     private String imageUrl;
