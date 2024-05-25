@@ -41,6 +41,16 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "memberId")
     private List<Participant> participants;
 
-    // 생성자 혹은 빌더
+    public void update(String nickname, String email, String company) {
+        if (nickname != null) {
+            this.nickname = nickname;
+        }
+        if (email != null) {
+            this.email = email;
+        }
+        if (company != null) {
+            this.company = company;
+        }
+    }
 
 }

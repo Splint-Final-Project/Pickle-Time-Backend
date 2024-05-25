@@ -2,9 +2,11 @@ package peakle_time.peakle_time.Member;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peakle_time.peakle_time.Member.dto.JoinRequest;
+import peakle_time.peakle_time.Member.dto.UpdateRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +17,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    //private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * loginId 중복 체크
@@ -46,11 +48,11 @@ public class MemberService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        //String encodedPassword = bCryptPasswordEncoder.encode(request.password());
+        String encodedPassword = bCryptPasswordEncoder.encode(request.password());
 
         Member member = Member.builder()
                 .loginId(request.loginId())
-                .password(request.password())
+                .password(encodedPassword)
                 .nickname(request.nickname())
                 .email(request.email())
                 .company(request.company())
@@ -63,9 +65,9 @@ public class MemberService {
         Member member = memberRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 로그인 아이디가 존재하지 않습니다."));
 
-//        if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
-//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-//        }
+        if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
 
         return member;
     }
@@ -76,5 +78,21 @@ public class MemberService {
 
     public List<Member> findAll() {
         return memberRepository.findAll();
+    }
+
+    public Member updateMember(Long id, UpdateRequest updateRequest) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+
+        // Use the update method
+        member.update(updateRequest.nickname(), updateRequest.email(), updateRequest.company());
+
+        return memberRepository.save(member);
+    }
+
+    public void deleteMember(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+        memberRepository.delete(member);
     }
 }

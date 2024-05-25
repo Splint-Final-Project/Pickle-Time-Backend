@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import peakle_time.peakle_time.Member.dto.JoinRequest;
+import peakle_time.peakle_time.Member.dto.UpdateRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,5 +46,25 @@ public class MemberController {
     public ResponseEntity<List<Member>> getAllMembers() {
         List<Member> members = memberService.findAll();
         return ResponseEntity.ok(members);
+    }
+
+    @PutMapping("/members/{id}")
+    public ResponseEntity<?> updateMember(@PathVariable Long id, @RequestBody UpdateRequest updateRequest) {
+        try {
+            Member updatedMember = memberService.updateMember(id, updateRequest);
+            return ResponseEntity.ok(updatedMember);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/members/{id}")
+    public ResponseEntity<?> deleteMember(@PathVariable Long id) {
+        try {
+            memberService.deleteMember(id);
+            return ResponseEntity.ok("회원 삭제 성공");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
