@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+@RequiredArgsConstructor // final 붙으면 autowire 됨
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -55,6 +55,8 @@ public class MemberService {
                 .email(request.email())
                 .company(request.company())
                 .build();
+        System.out.println(member);
+        System.out.println("asdfasdfasfd");
 
         return memberRepository.save(member);
     }
