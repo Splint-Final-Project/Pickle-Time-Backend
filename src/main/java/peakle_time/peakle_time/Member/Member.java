@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import peakle_time.peakle_time.global.BaseEntity;
 import peakle_time.peakle_time.Image.Image;
-import peakle_time.peakle_time.global.Location;
 import peakle_time.peakle_time.Participant.Participant;
 
 import java.util.List;

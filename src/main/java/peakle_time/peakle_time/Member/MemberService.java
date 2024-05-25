@@ -84,7 +84,6 @@ public class MemberService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-        // Use the update method
         member.update(updateRequest.nickname(), updateRequest.email(), updateRequest.company());
 
         return memberRepository.save(member);
