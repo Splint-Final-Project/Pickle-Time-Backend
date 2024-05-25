@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import peakle_time.peakle_time.global.BaseEntity;
 import peakle_time.peakle_time.Image.Image;
-import peakle_time.peakle_time.global.Location;
 import peakle_time.peakle_time.Participant.Participant;
 
 import java.util.List;
@@ -20,12 +19,11 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String loginId;
+    private String email;
 
     @Column(nullable = false)
     private String nickname;
 
-    private String email;
     private String password;
 
     @OneToOne
@@ -41,6 +39,16 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "memberId")
     private List<Participant> participants;
 
-    // 생성자 혹은 빌더
+    public void update(String nickname, String email, String company) {
+        if (nickname != null) {
+            this.nickname = nickname;
+        }
+        if (email != null) {
+            this.email = email;
+        }
+        if (company != null) {
+            this.company = company;
+        }
+    }
 
 }
