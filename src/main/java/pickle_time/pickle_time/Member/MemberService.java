@@ -55,9 +55,8 @@ public class MemberService {
                 .nickname(request.nickname())
                 .email(request.email())
                 .company(request.company())
+                .imageUrl(request.imageUrl())
                 .build();
-        System.out.println(member);
-        System.out.println("asdfasdfasfd");
 
         return memberRepository.save(member);
     }
@@ -85,7 +84,7 @@ public class MemberService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-        member.update(updateRequest.nickname(), updateRequest.email(), updateRequest.company());
+        member.update(updateRequest.nickname(), updateRequest.email(), updateRequest.company(), updateRequest.imageUrl());
 
         return memberRepository.save(member);
     }

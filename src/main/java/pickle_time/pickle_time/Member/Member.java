@@ -3,7 +3,6 @@ package pickle_time.pickle_time.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import pickle_time.pickle_time.global.BaseEntity;
-import pickle_time.pickle_time.Image.Image;
 import pickle_time.pickle_time.Participant.Participant;
 
 import java.util.List;
@@ -26,20 +25,18 @@ public class Member extends BaseEntity {
 
     private String password;
 
-    @OneToOne
-    private Image image;
+    private String image;
 
-//    @Embedded
-//    private Location location;
     private String company;
     private String socialType;
+    private String imageUrl;
 
 
     @OneToMany
     @JoinColumn(name = "memberId")
     private List<Participant> participants;
 
-    public void update(String nickname, String email, String company) {
+    public void update(String nickname, String email, String company,String imageUrl) {
         if (nickname != null) {
             this.nickname = nickname;
         }
@@ -48,6 +45,9 @@ public class Member extends BaseEntity {
         }
         if (company != null) {
             this.company = company;
+        }
+        if (imageUrl != null) {
+            this.imageUrl = imageUrl;
         }
     }
 

@@ -6,7 +6,8 @@ public record JoinRequest(
         String password,
         String checkPassword,
         String nickname,
-        String company
+        String company,
+        String imageUrl
 
 ) {
 }
