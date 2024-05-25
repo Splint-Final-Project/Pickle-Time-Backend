@@ -48,7 +48,7 @@ public class MemberController {
         return ResponseEntity.ok(members);
     }
 
-    @PutMapping("/members/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateMember(@PathVariable Long id, @RequestBody UpdateRequest updateRequest) {
         try {
             Member updatedMember = memberService.updateMember(id, updateRequest);
@@ -58,7 +58,7 @@ public class MemberController {
         }
     }
 
-    @DeleteMapping("/members/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMember(@PathVariable Long id) {
         try {
             memberService.deleteMember(id);
