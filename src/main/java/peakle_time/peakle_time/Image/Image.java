@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import peakle_time.peakle_time.Member.Member;
 
 @Entity
 @Getter
