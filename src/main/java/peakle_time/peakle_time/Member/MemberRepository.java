@@ -11,10 +11,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
         return findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저는 없습니다."));
     }
 
-    boolean existsByLoginId(String loginId);
+    boolean existsByEmail(String email);
 
     boolean existsByNickname(String nickname);
 
-    Optional<Member> findByLoginId(String loginId);
+    Optional<Member> findByEmail(String email);
 
 }

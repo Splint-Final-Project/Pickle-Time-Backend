@@ -27,9 +27,9 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String loginId, @RequestParam String password) {
+    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
         try {
-            memberService.login(loginId, password);
+            memberService.login(email, password);
             return ResponseEntity.ok("로그인 성공");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

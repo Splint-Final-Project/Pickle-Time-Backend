@@ -14,9 +14,6 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne
-    private Member userId;
     private String filename;
     private String filepath;
 

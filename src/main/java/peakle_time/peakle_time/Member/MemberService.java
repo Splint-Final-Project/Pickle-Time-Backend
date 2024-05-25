@@ -20,12 +20,12 @@ public class MemberService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
-     * loginId 중복 체크
+     * email 중복 체크
      * 회원가입 기능 구현 시 사용
      * 중복되면 true return
      */
-    public boolean checkLoginIdDuplicate(String loginId) {
-        return memberRepository.existsByLoginId(loginId);
+    public boolean checkEmailDuplicate(String email) {
+        return memberRepository.existsByEmail(email);
     }
 
     /**
@@ -38,8 +38,8 @@ public class MemberService {
     }
 
     public Member join(JoinRequest request) {
-        if (checkLoginIdDuplicate(request.loginId())) {
-            throw new IllegalArgumentException("이미 존재하는 로그인 아이디입니다.");
+        if (checkEmailDuplicate(request.email())) {
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
         if (checkNicknameDuplicate(request.nickname())) {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
@@ -51,7 +51,6 @@ public class MemberService {
         String encodedPassword = bCryptPasswordEncoder.encode(request.password());
 
         Member member = Member.builder()
-                .loginId(request.loginId())
                 .password(encodedPassword)
                 .nickname(request.nickname())
                 .email(request.email())
@@ -61,8 +60,8 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public Member login(String loginId, String password) {
-        Member member = memberRepository.findByLoginId(loginId)
+    public Member login(String email, String password) {
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("해당 로그인 아이디가 존재하지 않습니다."));
 
         if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
