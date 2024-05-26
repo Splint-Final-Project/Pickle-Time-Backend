@@ -1,4 +1,4 @@
-package peakle_time.peakle_time.global.auth;
+package pickle_time.pickle_time.global.auth;
 
 
 import jakarta.servlet.http.HttpServletResponse;
