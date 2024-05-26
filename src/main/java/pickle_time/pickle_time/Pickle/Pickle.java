@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pickle_time.pickle_time.Participant.Participant;
+import pickle_time.pickle_time.conversation.Conversation;
 import pickle_time.pickle_time.global.BaseEntity;
 import pickle_time.pickle_time.Member.Member;
 import pickle_time.pickle_time.global.Location;
@@ -28,6 +29,10 @@ public class Pickle extends BaseEntity {
     @OneToMany
     @JoinColumn(name = "pickleId")
     private List<Participant> participants;
+
+    @OneToOne
+    @JoinColumn(name = "conversationId")
+    private Conversation conversation;
 
     @Column(name = "title")
     private String title;
