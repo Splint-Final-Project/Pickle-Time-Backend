@@ -20,4 +20,5 @@ public class Review extends BaseEntity {
 
     @Column(name = "star")
     private int star;
+
 }
