@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pickle_time.pickle_time.User.dto.UserJoinRequest;
+import pickle_time.pickle_time.User.dto.UserLoginRequest;
 import pickle_time.pickle_time.User.dto.UserUpdateRequest;
 
 import java.util.List;
@@ -61,11 +62,11 @@ public class UserService {
         return userRepository.save(users);
     }
 
-    public Users login(String email, String password) {
-        Users users = userRepository.findByEmail(email)
+    public Users login(UserLoginRequest userLoginRequest) {
+        Users users = userRepository.findByEmail(userLoginRequest.email())
                 .orElseThrow(() -> new IllegalArgumentException("해당 로그인 아이디가 존재하지 않습니다."));
 
-        if (!bCryptPasswordEncoder.matches(password, users.getPassword())) {
+        if (!bCryptPasswordEncoder.matches(userLoginRequest.password(), users.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 

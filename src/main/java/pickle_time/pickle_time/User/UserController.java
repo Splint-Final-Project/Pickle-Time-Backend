@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pickle_time.pickle_time.User.dto.UserJoinRequest;
+import pickle_time.pickle_time.User.dto.UserLoginRequest;
 import pickle_time.pickle_time.User.dto.UserUpdateRequest;
 
 import java.util.List;
@@ -28,9 +29,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<?> login(@RequestBody UserLoginRequest userLoginRequest) {
         try {
-            userService.login(email, password);
+            userService.login(userLoginRequest);
             return ResponseEntity.ok("로그인 성공");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
