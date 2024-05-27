@@ -31,7 +31,7 @@ public class Users extends BaseEntity {
 
 
     @OneToMany
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "usersId")
     private List<Participant> participants;
 
     public void update(String nickname, String email, String company,String imageUrl) {

@@ -22,7 +22,7 @@ public class Pickle extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "usersId")
     private Users users;
 
     @OneToMany
