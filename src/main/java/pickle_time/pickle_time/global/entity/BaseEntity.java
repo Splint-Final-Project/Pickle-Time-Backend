@@ -1,4 +1,4 @@
-package pickle_time.pickle_time.global;
+package pickle_time.pickle_time.global.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

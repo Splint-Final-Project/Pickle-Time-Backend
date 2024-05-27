@@ -2,10 +2,8 @@ package pickle_time.pickle_time.Participant;
 
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import pickle_time.pickle_time.global.BaseEntity;
+import pickle_time.pickle_time.global.entity.BaseEntity;
 import pickle_time.pickle_time.Member.Member;
 import pickle_time.pickle_time.Pickle.Pickle;
 
