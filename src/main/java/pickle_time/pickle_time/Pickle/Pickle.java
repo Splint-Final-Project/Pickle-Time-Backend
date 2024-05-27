@@ -6,8 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pickle_time.pickle_time.User.Users;
 import pickle_time.pickle_time.Participant.Participant;
-import pickle_time.pickle_time.global.BaseEntity;
-import pickle_time.pickle_time.global.Location;
+
+
+import pickle_time.pickle_time.global.entity.BaseEntity;
+import pickle_time.pickle_time.global.entity.Location;
 
 import java.util.List;
 

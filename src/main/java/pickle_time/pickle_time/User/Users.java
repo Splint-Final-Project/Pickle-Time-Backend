@@ -2,7 +2,7 @@ package pickle_time.pickle_time.User;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pickle_time.pickle_time.global.BaseEntity;
+import pickle_time.pickle_time.global.entity.BaseEntity;
 import pickle_time.pickle_time.Participant.Participant;
 
 import java.util.List;
