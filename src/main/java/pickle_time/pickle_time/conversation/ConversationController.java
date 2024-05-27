@@ -17,8 +17,8 @@ public class ConversationController {
 //        return conversationService.getConversationWithPickle(id);
 //    }
 
-    @PostMapping
-    public Conversation createConversation(@RequestBody Conversation conversation) {
-        return conversationService.saveConversation(conversation);
-    }
+//    @PostMapping
+//    public Conversation createConversation(@RequestBody Conversation conversation) {
+//        return conversationService.saveConversation(conversation);
+//    }
 }

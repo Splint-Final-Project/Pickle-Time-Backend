@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/ws/**").permitAll() // 소켓 허용
+                                .requestMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**").permitAll() // 정적 리소스 경로 허용
                                 .anyRequest().authenticated()
                 );
 

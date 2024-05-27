@@ -14,11 +14,11 @@ public class ConversationService {
     @Autowired
     private PickleRepository pickleRepository;
 
-    @Autowired
-    private ConversationRepository conversationRepository;
+//    @Autowired
+//    private ConversationRepository conversationRepository;
 
-    @Transactional
-    public Conversation saveConversation(Conversation conversation) {
-        return conversationRepository.save(conversation);
-    }
+//    @Transactional
+//    public Conversation saveConversation(Conversation conversation) {
+//        return conversationRepository.save(conversation);
+//    }
 }
