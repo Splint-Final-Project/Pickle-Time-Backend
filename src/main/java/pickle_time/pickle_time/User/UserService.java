@@ -40,7 +40,7 @@ public class UserService {
 
     public Users join(UserJoinRequest request) {
         if (checkEmailDuplicate(request.email())) {
-            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+            throw new IllegalArgumentException("이미 존재하는 회원입니다.");
         }
         if (checkNicknameDuplicate(request.nickname())) {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
@@ -81,7 +81,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Users updateMember(Long id, UserUpdateRequest userUpdateRequest) {
+    public Users updateUsers(Long id, UserUpdateRequest userUpdateRequest) {
         Users users = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
@@ -90,7 +90,7 @@ public class UserService {
         return userRepository.save(users);
     }
 
-    public void deleteMember(Long id) {
+    public void deleteUsers(Long id) {
         Users users = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         userRepository.delete(users);

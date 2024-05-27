@@ -39,21 +39,21 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getMemberById(@PathVariable Long id) {
-        Optional<Users> member = userService.findById(id);
-        return member.isPresent() ? ResponseEntity.ok(member.get()) : ResponseEntity.notFound().build();
+    public ResponseEntity<?> getUsersById(@PathVariable Long id) {
+        Optional<Users> users = userService.findById(id);
+        return users.isPresent() ? ResponseEntity.ok(users.get()) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Users>> getAllMembers() {
+    public ResponseEntity<List<Users>> getAllUsers() {
         List<Users> users = userService.findAll();
         return ResponseEntity.ok(users);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateMember(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
+    public ResponseEntity<?> updateUsers(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
         try {
-            Users updatedUsers = userService.updateMember(id, userUpdateRequest);
+            Users updatedUsers = userService.updateUsers(id, userUpdateRequest);
             return ResponseEntity.ok(updatedUsers);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -61,9 +61,9 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMember(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUsers(@PathVariable Long id) {
         try {
-            userService.deleteMember(id);
+            userService.deleteUsers(id);
             return ResponseEntity.ok("회원 삭제 성공");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
