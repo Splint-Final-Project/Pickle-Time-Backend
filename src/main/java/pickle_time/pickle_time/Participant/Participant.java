@@ -3,9 +3,9 @@ package pickle_time.pickle_time.Participant;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import pickle_time.pickle_time.global.entity.BaseEntity;
-import pickle_time.pickle_time.Member.Member;
+import pickle_time.pickle_time.User.Users;
 import pickle_time.pickle_time.Pickle.Pickle;
+import pickle_time.pickle_time.global.entity.BaseEntity;
 
 @Entity
 @Getter
@@ -15,8 +15,8 @@ public class Participant extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "memberId")
-    private Member member;
+    @JoinColumn(name = "usersId")
+    private Users users;
 
     @ManyToOne
     @JoinColumn(name = "pickleId")
@@ -27,8 +27,8 @@ public class Participant extends BaseEntity {
 
     public Participant() {}
 
-    public Participant(Member member, Pickle pickle, String role) {
-        this.member = member;
+    public Participant(Users users, Pickle pickle, String role) {
+        this.users = users;
         this.pickle = pickle;
         this.role = role;
     }

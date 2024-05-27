@@ -1,4 +1,4 @@
-package pickle_time.pickle_time.Member;
+package pickle_time.pickle_time.User;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class Member extends BaseEntity {
+public class Users extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class Member extends BaseEntity {
 
 
     @OneToMany
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "usersId")
     private List<Participant> participants;
 
     public void update(String nickname, String email, String company,String imageUrl) {
