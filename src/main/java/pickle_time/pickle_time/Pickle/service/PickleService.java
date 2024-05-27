@@ -24,7 +24,7 @@ public class PickleService {
 
   public Pickle createPickle(CreatePickleRequest createPickleRequest) {
     Users user = userRepository.findById(createPickleRequest.userId())
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+            .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
     Pickle pickle = Pickle.builder()
             .users(user)
@@ -33,13 +33,14 @@ public class PickleService {
             .latitude(createPickleRequest.latitude())
             .longitude(createPickleRequest.longitude())
             .pickleStatus(PickleStatus.RECRUITING)
+            .capacity(createPickleRequest.capacity())
             .build();
 
     return pickleRepository.save(pickle);
   }
   public Pickle findById(Long id) {
     return pickleRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Pickle not found"));
+            .orElseThrow(() -> new IllegalArgumentException("해당 피클이 존재하지 않습니다."));
   }
 
   public List<Pickle> findAll() {
@@ -48,13 +49,14 @@ public class PickleService {
 
   public Pickle updatePickle(Long id, UpdatePickleRequest updatePickleRequest) {
     Pickle pickle = pickleRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Pickle not found"));
+            .orElseThrow(() -> new IllegalArgumentException("해당 피클이 존재하지 않습니다."));
 
     pickle.update(
             updatePickleRequest.title(),
             updatePickleRequest.content(),
             updatePickleRequest.latitude(),
-            updatePickleRequest.longitude()
+            updatePickleRequest.longitude(),
+            updatePickleRequest.capacity()
     );
 
     return pickleRepository.save(pickle);
@@ -62,7 +64,7 @@ public class PickleService {
 
   public void deletePickle(Long id) {
     Pickle pickle = pickleRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Pickle not found"));
+            .orElseThrow(() -> new IllegalArgumentException("해당 피클이 존재하지 않습니다."));
     pickleRepository.delete(pickle);
   }
 

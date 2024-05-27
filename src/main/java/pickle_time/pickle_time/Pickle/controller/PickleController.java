@@ -58,7 +58,7 @@ public class PickleController {
   public ResponseEntity<?> deletePickle(@PathVariable Long id) {
     try {
       pickleService.deletePickle(id);
-      return ResponseEntity.ok("Pickle deleted successfully");
+      return ResponseEntity.ok("피클 삭제 성공");
     } catch (IllegalArgumentException e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     }

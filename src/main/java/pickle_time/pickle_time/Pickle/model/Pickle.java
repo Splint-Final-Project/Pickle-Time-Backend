@@ -43,6 +43,9 @@ public class Pickle extends BaseEntity {
     @Column(name = "viewCount")
     private int viewCount;
 
+    @Column(name = "capacity")
+    private int capacity;
+
     @Column(name = "latitude")
     private double latitude;
 
@@ -52,7 +55,7 @@ public class Pickle extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PickleStatus pickleStatus;
 
-    public void update(String title, String content, double latitude, double longitude) {
+    public void update(String title, String content, double latitude, double longitude, Integer capacity) {
         if (title != null) {
             this.title = title;
         }
@@ -64,6 +67,9 @@ public class Pickle extends BaseEntity {
         }
         if (longitude >= MIN_LONGITUDE && longitude <= MAX_LONGITUDE) {
             this.longitude = longitude;
+        }
+        if (capacity != null) {
+            this.capacity = capacity;
         }
 
     }
