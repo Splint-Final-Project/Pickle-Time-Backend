@@ -1,4 +1,4 @@
-package pickle_time.pickle_time.Member.dto;
+package pickle_time.pickle_time.User.dto;
 
 public record JoinRequest(
 
