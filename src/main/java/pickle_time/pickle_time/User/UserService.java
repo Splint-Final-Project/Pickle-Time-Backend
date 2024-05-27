@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pickle_time.pickle_time.User.dto.JoinRequest;
-import pickle_time.pickle_time.User.dto.UpdateRequest;
+import pickle_time.pickle_time.User.dto.UserJoinRequest;
+import pickle_time.pickle_time.User.dto.UserUpdateRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +37,7 @@ public class UserService {
         return userRepository.existsByNickname(nickname);
     }
 
-    public Users join(JoinRequest request) {
+    public Users join(UserJoinRequest request) {
         if (checkEmailDuplicate(request.email())) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
@@ -80,11 +80,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Users updateMember(Long id, UpdateRequest updateRequest) {
+    public Users updateMember(Long id, UserUpdateRequest userUpdateRequest) {
         Users users = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-        users.update(updateRequest.nickname(), updateRequest.email(), updateRequest.company(), updateRequest.imageUrl());
+        users.update(userUpdateRequest.nickname(), userUpdateRequest.email(), userUpdateRequest.company(), userUpdateRequest.imageUrl());
 
         return userRepository.save(users);
     }

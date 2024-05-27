@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import pickle_time.pickle_time.global.BaseEntity;
 import pickle_time.pickle_time.User.Users;
-import pickle_time.pickle_time.Pickle.Pickle;
+import pickle_time.pickle_time.Pickle.model.Pickle;
 
 @Entity
 @Getter
