@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pickle_time.pickle_time.User.Users;
 import pickle_time.pickle_time.Participant.Participant;
 import pickle_time.pickle_time.global.BaseEntity;
-import pickle_time.pickle_time.Member.Member;
 import pickle_time.pickle_time.global.Location;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class Pickle extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "memberId")
-    private Member member;
+    private Users users;
 
     @OneToMany
     @JoinColumn(name = "pickleId")
@@ -50,8 +50,8 @@ public class Pickle extends BaseEntity {
     @Embedded
     private Location location;
 
-    public Pickle(Member member, String title, String content, double latitude, double longitude, Status status,Location location) {
-        this.member = member;
+    public Pickle(Users users, String title, String content, double latitude, double longitude, Status status, Location location) {
+        this.users = users;
         this.title = title;
         this.content = content;
         this.viewCount = 0;
