@@ -29,3 +29,7 @@ logging:
     org:
       springframework:
         security: DEBUG
+jwt:
+  secret: lVUiTGbxj4xgW5orFkfdNP72414P5q7ysgJi0rBSY9LwIWkjMY9VrxXV6BdF3bR+wpUgx/vQniz5lqNPbPwRPA==
+
+  expiration: 86400000  # 1 day in milliseconds
