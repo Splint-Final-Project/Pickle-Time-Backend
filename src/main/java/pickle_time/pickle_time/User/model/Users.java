@@ -1,8 +1,8 @@
-package pickle_time.pickle_time.User.model;
+package pickle_time.pickle_time.User;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pickle_time.pickle_time.global.BaseEntity;
+import pickle_time.pickle_time.global.entity.BaseEntity;
 import pickle_time.pickle_time.Participant.Participant;
 
 import java.util.List;
@@ -18,13 +18,11 @@ public class Users extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
     private String email;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String nickname;
 
-    @Column(nullable = false, length = 100)
     private String password;
 
     private String company;
@@ -35,7 +33,8 @@ public class Users extends BaseEntity {
     @OneToMany
     @JoinColumn(name = "usersId")
     private List<Participant> participants;
-    public void update(String nickname, String email, String company, String imageUrl) {
+
+    public void update(String nickname, String email, String company,String imageUrl) {
         if (nickname != null) {
             this.nickname = nickname;
         }
