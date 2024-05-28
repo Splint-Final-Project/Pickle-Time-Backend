@@ -32,9 +32,9 @@ public class Users extends BaseEntity {
     private String imageUrl;
 
 
-//    @OneToMany
-//    @JoinColumn(name = "usersId")
-//    private List<Participant> participants;
+    @OneToMany
+    @JoinColumn(name = "usersId")
+    private List<Participant> participants;
     public void update(String nickname, String email, String company, String imageUrl) {
         if (nickname != null) {
             this.nickname = nickname;
