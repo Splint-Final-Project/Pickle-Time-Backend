@@ -32,4 +32,5 @@ public class Participant extends BaseEntity {
         this.pickle = pickle;
         this.role = role;
     }
+
 }

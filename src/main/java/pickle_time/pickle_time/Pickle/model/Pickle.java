@@ -21,7 +21,6 @@ public class Pickle extends BaseEntity {
     private static final Integer MAX_LONGITUDE = 180;
     private static final Integer MIN_LONGITUDE = -180;
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
