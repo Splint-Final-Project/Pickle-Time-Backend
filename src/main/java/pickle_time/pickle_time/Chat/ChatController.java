@@ -2,6 +2,7 @@ package pickle_time.pickle_time.Chat;
 
 import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatController {
 
+    @Autowired
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageService chatMessageService;
 

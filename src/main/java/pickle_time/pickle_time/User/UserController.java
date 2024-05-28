@@ -15,6 +15,11 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
+    @GetMapping("/chat")
+    public String chat() {
+        return "chat"; // "chat"은 chat.html 파일을 가리킵니다.
+    }
+
     @MessageMapping("/user.addUser")
     @SendTo("/user/public")
     public User addUser(

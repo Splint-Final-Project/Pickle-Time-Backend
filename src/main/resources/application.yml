@@ -1,6 +1,6 @@
 spring:
-  config:
-    import: optional:file:.env[.properties]
+#  config:
+#    import: optional:file:.env[.properties]
   datasource:
     url: jdbc:h2:tcp://localhost:9092/~/test
     username: sa
@@ -18,8 +18,8 @@ spring:
   #     password: 1234
   data:
     mongodb:
-      uri: ${MONGODB_URI}
-      database: ${DATABASE_NAME}
+      uri: mongodb+srv://whai:RAf!eWr-bAmf!L5@cluster0.cefghb6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: chat_app
 logging.level:
   org.hibernate.SQL: debug
 server:

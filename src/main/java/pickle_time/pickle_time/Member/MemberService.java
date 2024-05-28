@@ -17,7 +17,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * email 중복 체크
@@ -48,10 +48,10 @@ public class MemberService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        String encodedPassword = bCryptPasswordEncoder.encode(request.password());
+//        String encodedPassword = bCryptPasswordEncoder.encode(request.password());
 
         Member member = Member.builder()
-                .password(encodedPassword)
+//                .password(encodedPassword)
                 .nickname(request.nickname())
                 .email(request.email())
                 .company(request.company())
@@ -66,9 +66,9 @@ public class MemberService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("해당 로그인 아이디가 존재하지 않습니다."));
 
-        if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+//        if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
+//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+//        }
 
         return member;
     }
