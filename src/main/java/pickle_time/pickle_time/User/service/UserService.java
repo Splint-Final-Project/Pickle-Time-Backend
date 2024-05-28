@@ -1,15 +1,16 @@
-package pickle_time.pickle_time.User;
+package pickle_time.pickle_time.User.service;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pickle_time.pickle_time.User.dto.UserJoinRequest;
-import pickle_time.pickle_time.User.dto.UserLoginRequest;
-import pickle_time.pickle_time.User.dto.UserUpdateRequest;
-
-import java.util.List;
+import pickle_time.pickle_time.User.Repository.UserRepository;
+import pickle_time.pickle_time.User.dto.response.UserProfileResponse;
+import pickle_time.pickle_time.User.model.Users;
+import pickle_time.pickle_time.User.dto.request.UserJoinRequest;
+import pickle_time.pickle_time.User.dto.request.UserLoginRequest;
+import pickle_time.pickle_time.User.dto.request.UserUpdateRequest;
 import java.util.Optional;
 
 @Service
@@ -40,7 +41,7 @@ public class UserService {
 
     public Users join(UserJoinRequest request) {
         if (checkEmailDuplicate(request.email())) {
-            throw new IllegalArgumentException("이미 존재하는 회원입니다.");
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
         if (checkNicknameDuplicate(request.nickname())) {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
@@ -64,7 +65,7 @@ public class UserService {
 
     public Users login(UserLoginRequest userLoginRequest) {
         Users users = userRepository.findByEmail(userLoginRequest.email())
-                .orElseThrow(() -> new IllegalArgumentException("해당 로그인 아이디가 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 이메일이 존재하지 않습니다."));
 
         if (!bCryptPasswordEncoder.matches(userLoginRequest.password(), users.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
@@ -77,17 +78,15 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public List<Users> findAll() {
-        return userRepository.findAll();
-    }
 
-    public Users updateUsers(Long id, UserUpdateRequest userUpdateRequest) {
+    public UserProfileResponse updateUsers(Long id, UserUpdateRequest userUpdateRequest) {
         Users users = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
         users.update(userUpdateRequest.nickname(), userUpdateRequest.email(), userUpdateRequest.company(), userUpdateRequest.imageUrl());
+        userRepository.save(users);
 
-        return userRepository.save(users);
+        return new UserProfileResponse(users.getNickname(), users.getEmail(), users.getCompany(), users.getImageUrl());
     }
 
     public void deleteUsers(Long id) {

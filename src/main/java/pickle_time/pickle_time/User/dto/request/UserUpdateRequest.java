@@ -1,4 +1,4 @@
-package pickle_time.pickle_time.User.dto;
+package pickle_time.pickle_time.User.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 
