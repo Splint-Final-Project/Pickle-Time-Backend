@@ -70,7 +70,6 @@ public class Pickle extends BaseEntity {
         if (capacity != null) {
             this.capacity = capacity;
         }
-
     }
 }
 
