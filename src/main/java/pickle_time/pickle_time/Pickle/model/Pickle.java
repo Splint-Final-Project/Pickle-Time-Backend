@@ -1,10 +1,10 @@
-package pickle_time.pickle_time.Pickle;
+package pickle_time.pickle_time.Pickle.model;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pickle_time.pickle_time.User.Users;
+import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.Participant.Participant;
 
 
