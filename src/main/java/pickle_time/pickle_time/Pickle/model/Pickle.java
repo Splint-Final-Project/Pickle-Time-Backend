@@ -1,9 +1,7 @@
 package pickle_time.pickle_time.Pickle.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.Participant.Participant;
 
@@ -11,13 +9,21 @@ import pickle_time.pickle_time.Participant.Participant;
 import pickle_time.pickle_time.global.entity.BaseEntity;
 import pickle_time.pickle_time.global.entity.Location;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 public class Pickle extends BaseEntity {
+
+    private static final Integer MAX_LATITUDE = 90;
+    private static final Integer MIN_LATITUDE = -90;
+    private static final Integer MAX_LONGITUDE = 180;
+    private static final Integer MIN_LONGITUDE = -180;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +33,9 @@ public class Pickle extends BaseEntity {
     @JoinColumn(name = "usersId")
     private Users users;
 
-    @OneToMany
+    @OneToMany(mappedBy = "pickle")
     @JoinColumn(name = "pickleId")
-    private List<Participant> participants;
+    private List<Participant> participants = new ArrayList<>();
 
     @Column(name = "title")
     private String title;
@@ -46,20 +52,27 @@ public class Pickle extends BaseEntity {
     @Column(name = "longitude")
     private double longitude;
 
+    @Column(name = "capacity")
+    private Integer capacity;
+
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private PickleStatus pickleStatus;
 
-    @Embedded
-    private Location location;
-
-    public Pickle(Users users, String title, String content, double latitude, double longitude, Status status, Location location) {
-        this.users = users;
-        this.title = title;
-        this.content = content;
-        this.viewCount = 0;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.status = status;
-        this.location = location;
+    public void update(String title, String content, double latitude, double longitude, Integer capacity) {
+        if (title != null) {
+            this.title = title;
+        }
+        if (content != null) {
+            this.content = content;
+        }
+        if (latitude >= MIN_LATITUDE && latitude <= MAX_LATITUDE) {
+            this.latitude = latitude;
+        }
+        if (longitude >= MIN_LONGITUDE && longitude <= MAX_LONGITUDE) {
+            this.longitude = longitude;
+        }
+        if(capacity != null) {
+            this.capacity = capacity;
+        }
     }
 }
