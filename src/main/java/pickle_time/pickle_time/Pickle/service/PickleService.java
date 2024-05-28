@@ -9,8 +9,8 @@ import pickle_time.pickle_time.Pickle.dto.request.UpdatePickleRequest;
 import pickle_time.pickle_time.Pickle.model.Pickle;
 import pickle_time.pickle_time.Pickle.model.PickleStatus;
 import pickle_time.pickle_time.Pickle.repository.PickleRepository;
-import pickle_time.pickle_time.User.UserRepository;
-import pickle_time.pickle_time.User.Users;
+import pickle_time.pickle_time.User.Repository.UserRepository;
+import pickle_time.pickle_time.User.model.Users;
 
 import java.util.List;
 
