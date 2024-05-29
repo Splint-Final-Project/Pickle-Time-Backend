@@ -16,7 +16,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import pickle_time.pickle_time.global.auth.dto.PrincipalDetails;
 import pickle_time.pickle_time.global.auth.exception.JwtAuthenticationException;
 import pickle_time.pickle_time.global.auth.service.UserDetailService;
 
@@ -34,15 +33,11 @@ public class TokenProvider {
     private static String key = "64461f01e1af406da538b9c48d801ce59142452199ff112fb5404c8e7e98e3ff";
     private SecretKey secretKey = Keys.hmacShaKeyFor(key.getBytes());
 
-    private final UserDetailService userDetailService;
-
-
     public String generateToken(Authentication authentication) {
         long now = (new Date()).getTime();
 
-        String authorities = authentication.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                                .collect(Collectors.joining(","));
+        String authorities = authentication.getAuthorities().stream().findFirst().get().getAuthority();
+        log.info(authorities);
 
         Date accessTokenExpiresIn = new Date(now + 86400000);
         return Jwts.builder()

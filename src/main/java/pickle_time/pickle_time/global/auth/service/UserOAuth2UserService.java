@@ -13,8 +13,7 @@ import pickle_time.pickle_time.User.Repository.UserRepository;
 import pickle_time.pickle_time.User.model.Users;
 
 import pickle_time.pickle_time.global.auth.dto.OAuth2UserInfo;
-import pickle_time.pickle_time.global.auth.dto.PrincipalDetails;
-import pickle_time.pickle_time.global.auth.exception.UserNotExistException;
+import pickle_time.pickle_time.global.auth.detail.PrincipalDetails;
 
 import java.util.Map;
 import java.util.Optional;
@@ -27,9 +26,6 @@ public class UserOAuth2UserService extends DefaultOAuth2UserService {
 
 
     private final UserRepository memberRepository;
-
-    private final UserRepository userRepository;
-
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -58,14 +54,8 @@ public class UserOAuth2UserService extends DefaultOAuth2UserService {
         // TODO : Redirect URL 형식을 바꾸기. => 토큰 전달 시, 특정 페이지로 리다이렉트 시키기!
         // TODO : 일반 이메일 로그인 시, 토큰 발급.
         // TODO : 배포드리기.
-
-        // TODO :
-
-        // TODO :  정보 전달은 쿼리스트링 (redirect 조사)
-
-
-        // * TODO : 토큰 검증할 때, Users 테이블에 존재하는지 검증하기. (생각해보기)
-        Optional<Users> member= memberRepository.findByEmail(oAuth2UserInfo.email());
+        // TODO : 토큰 검증할 때, Users 테이블에 존재하는지 검증하기. (생각해보기)
+        Optional<Users> member= memberRepository.findByEmailAndSocialType(oAuth2UserInfo.email(), registrationId);
         if (member.isEmpty()) {
             Users users = memberRepository.save(new Users(oAuth2UserInfo.email(), oAuth2UserInfo.name(), registrationId, oAuth2UserInfo.profile()));
             return new PrincipalDetails(users, attributes, userNameAttributeName);

@@ -23,8 +23,8 @@ import java.time.format.DateTimeFormatter;
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        log.error("Authentication Exception Occurs!");
-        this.sendErrorMessage(new BadCredentialsException("로그인이 필요합니다.(인증 실패)"),response);
+        log.error(authException.getMessage());
+        this.sendErrorMessage(new BadCredentialsException("로그인이 필요합니다.(인증 실패)"), response);
     }
 
     private void sendErrorMessage(Exception authenticationException,

@@ -25,7 +25,7 @@ public class Users extends BaseEntity {
     @Column(nullable = false)
     private String nickname;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
     private String status;
@@ -67,7 +67,7 @@ public class Users extends BaseEntity {
         this.nickname = nickname;
         this.socialType = socialType;
         this.imageUrl = imageUrl;
-        this.status = "PENDING";
+        this.status = "ROLE_PENDING";
     }
 
 }

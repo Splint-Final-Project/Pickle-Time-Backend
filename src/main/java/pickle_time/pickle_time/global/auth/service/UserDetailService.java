@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import pickle_time.pickle_time.User.Repository.UserRepository;
 import pickle_time.pickle_time.User.model.Users;
-import pickle_time.pickle_time.global.auth.dto.PrincipalDetails;
+import pickle_time.pickle_time.global.auth.detail.PrincipalDetails;
 
 @Service
 public class UserDetailService implements UserDetailsService {

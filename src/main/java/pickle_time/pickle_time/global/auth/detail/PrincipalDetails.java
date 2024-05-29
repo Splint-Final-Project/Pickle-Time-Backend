@@ -1,4 +1,4 @@
-package pickle_time.pickle_time.global.auth.dto;
+package pickle_time.pickle_time.global.auth.detail;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
