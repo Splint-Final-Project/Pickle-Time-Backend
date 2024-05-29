@@ -9,7 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-import pickle_time.pickle_time.User.Users;
+
+import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.global.auth.dto.PrincipalDetails;
 import pickle_time.pickle_time.global.jwt.TokenProvider;
 import java.io.IOException;
