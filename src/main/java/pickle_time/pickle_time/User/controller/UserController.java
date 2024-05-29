@@ -37,9 +37,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getMemberById(@PathVariable Long id) {
-        Optional<Users> member = userService.findById(id);
-        return member.isPresent() ? ResponseEntity.ok(member.get()) : ResponseEntity.notFound().build();
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        Optional<Users> user = userService.findById(id);
+        return user.isPresent() ? ResponseEntity.ok(user.get()) : ResponseEntity.notFound().build();
     }
 
 

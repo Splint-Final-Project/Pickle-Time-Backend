@@ -4,14 +4,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import pickle_time.pickle_time.Member.Member;
+import pickle_time.pickle_time.User.model.Users;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
 public record PrincipalDetails(
-        Member member,
+        Users user,
         Map<String, Object> attributes,
         String attributeKey
 ) implements OAuth2User, UserDetails {
@@ -22,7 +22,7 @@ public record PrincipalDetails(
 
     @Override
     public String getUsername() {
-        return Long.toString(member.getId());
+        return Long.toString(user.getId());
     }
 
     @Override

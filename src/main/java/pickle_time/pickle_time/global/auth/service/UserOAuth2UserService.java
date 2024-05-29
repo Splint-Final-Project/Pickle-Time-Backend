@@ -8,8 +8,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import pickle_time.pickle_time.Member.Member;
-import pickle_time.pickle_time.Member.MemberRepository;
+import pickle_time.pickle_time.User.Repository.UserRepository;
+import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.global.auth.dto.OAuth2UserInfo;
 import pickle_time.pickle_time.global.auth.dto.PrincipalDetails;
 import pickle_time.pickle_time.global.auth.exception.UserNotExistException;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @Slf4j
 public class UserOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -42,13 +42,13 @@ public class UserOAuth2UserService extends DefaultOAuth2UserService {
         // User 정보 DTO
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfo.of(registrationId, attributes);
 
-        Optional<Member> member= memberRepository.findByEmail(oAuth2UserInfo.email());
-        if (member.isEmpty()) {
+        Optional<Users> user= userRepository.findByEmail(oAuth2UserInfo.email());
+        if (user.isEmpty()) {
             log.info("In OAuth User Not Found");
             throw new UserNotExistException(oAuth2UserInfo);
         }
 
         // OAuth2User 로 반환.
-        return new PrincipalDetails(member.get(), attributes, userNameAttributeName );
+        return new PrincipalDetails(user.get(), attributes, userNameAttributeName );
     }
 }
