@@ -4,17 +4,27 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import pickle_time.pickle_time.Member.Member;
+import pickle_time.pickle_time.User.Users;
+
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
 public record PrincipalDetails(
-        Member member,
+        Users user,
         Map<String, Object> attributes,
         String attributeKey
 ) implements OAuth2User, UserDetails {
+
+    public PrincipalDetails(Users user) {
+        this(user, Collections.emptyMap(), null);
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
     @Override
     public String getPassword() {
         return null;
@@ -22,7 +32,7 @@ public record PrincipalDetails(
 
     @Override
     public String getUsername() {
-        return Long.toString(member.getId());
+        return Long.toString(user.getId());
     }
 
     @Override
@@ -53,7 +63,7 @@ public record PrincipalDetails(
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(
-                new SimpleGrantedAuthority("USER") // 추후 User 의 Role 추가하기.
+                new SimpleGrantedAuthority(user.getStatus())
         );
     }
 

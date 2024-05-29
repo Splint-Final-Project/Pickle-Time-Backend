@@ -24,7 +24,7 @@ public class Users extends BaseEntity {
     private String nickname;
 
     private String password;
-
+    private String status;
     private String company;
     private String socialType;
     private String imageUrl;
@@ -47,6 +47,14 @@ public class Users extends BaseEntity {
         if (imageUrl != null) {
             this.imageUrl = imageUrl;
         }
+    }
+
+    public Users(String email, String nickname,  String socialType, String imageUrl) {
+        this.email = email;
+        this.nickname = nickname;
+        this.socialType = socialType;
+        this.imageUrl = imageUrl;
+        this.status = "PENDING";
     }
 
 }

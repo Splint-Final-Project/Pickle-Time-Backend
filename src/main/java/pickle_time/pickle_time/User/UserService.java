@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pickle_time.pickle_time.User.dto.JoinRequest;
 import pickle_time.pickle_time.User.dto.UpdateRequest;
+import pickle_time.pickle_time.global.auth.service.UserDetailService;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserDetailService userDetailService;
 
     /**
      * email 중복 체크
@@ -65,9 +67,14 @@ public class UserService {
         Users users = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("해당 로그인 아이디가 존재하지 않습니다."));
 
+//        userDetailService.loadUserByUsername(users.getId());
+
+
         if (!bCryptPasswordEncoder.matches(password, users.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+
+
 
         return users;
     }
