@@ -9,13 +9,16 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import pickle_time.pickle_time.global.auth.dto.PrincipalDetails;
 import pickle_time.pickle_time.global.auth.exception.JwtAuthenticationException;
+import pickle_time.pickle_time.global.auth.service.UserDetailService;
 
 import javax.crypto.SecretKey;
 import java.util.Collections;
@@ -25,10 +28,14 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class TokenProvider {
 
-    private String key = "64461f01e1af406da538b9c48d801ce59142452199ff112fb5404c8e7e98e3ff";
+    private static String key = "64461f01e1af406da538b9c48d801ce59142452199ff112fb5404c8e7e98e3ff";
     private SecretKey secretKey = Keys.hmacShaKeyFor(key.getBytes());
+
+    private final UserDetailService userDetailService;
+
 
     public String generateToken(Authentication authentication) {
         long now = (new Date()).getTime();
@@ -36,8 +43,6 @@ public class TokenProvider {
         String authorities = authentication.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.joining(","));
-
-        System.out.println(authorities);
 
         Date accessTokenExpiresIn = new Date(now + 86400000);
         return Jwts.builder()

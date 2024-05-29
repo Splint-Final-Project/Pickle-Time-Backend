@@ -5,12 +5,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pickle_time.pickle_time.global.auth.service.UserDetailService;
+
+import java.util.List;
+
 import pickle_time.pickle_time.User.Repository.UserRepository;
 import pickle_time.pickle_time.User.dto.response.UserProfileResponse;
 import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.User.dto.request.UserJoinRequest;
 import pickle_time.pickle_time.User.dto.request.UserLoginRequest;
 import pickle_time.pickle_time.User.dto.request.UserUpdateRequest;
+
 import java.util.Optional;
 
 @Service
@@ -20,6 +25,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserDetailService userDetailService;
 
     /**
      * email 중복 체크
@@ -70,6 +76,8 @@ public class UserService {
         if (!bCryptPasswordEncoder.matches(userLoginRequest.password(), users.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+
+
 
         return users;
     }

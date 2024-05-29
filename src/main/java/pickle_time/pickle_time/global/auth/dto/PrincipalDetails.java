@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import pickle_time.pickle_time.User.model.Users;
 
+
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -15,6 +17,15 @@ public record PrincipalDetails(
         Map<String, Object> attributes,
         String attributeKey
 ) implements OAuth2User, UserDetails {
+
+    public PrincipalDetails(Users user) {
+        this(user, Collections.emptyMap(), null);
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
     @Override
     public String getPassword() {
         return null;
@@ -53,7 +64,7 @@ public record PrincipalDetails(
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(
-                new SimpleGrantedAuthority("USER") // 추후 User 의 Role 추가하기.
+                new SimpleGrantedAuthority(user.getStatus())
         );
     }
 
