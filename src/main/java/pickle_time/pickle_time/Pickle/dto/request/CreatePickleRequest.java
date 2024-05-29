@@ -14,7 +14,7 @@ public record CreatePickleRequest(
         @NotNull(message = "올바르지 않은 위도입니다.") Double latitude,
         @NotBlank(message = "스터디 제목을 입력해 주세요") String title,
         @NotNull(message = "기간을 입력해 주세요") LocalDateTime periodTime,
-        @Min(value = 2, message = "정원은 {value}명 이상이어야 합니다.") @Max(value = 8, message = "정원은 {value}명 이하여야 합니다. ") Integer capacity,
+        @Min(value = 2, message = "정원은 {value}명 이상이어야 합니다.") Integer capacity,
         @NotBlank(message = "내용을 입력해 주세요") String content
 
 ) {

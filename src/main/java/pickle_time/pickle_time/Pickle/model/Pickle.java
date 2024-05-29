@@ -4,14 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.Participant.Participant;
-
-
 import pickle_time.pickle_time.global.entity.BaseEntity;
-import pickle_time.pickle_time.global.entity.Location;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Getter
@@ -30,10 +26,10 @@ public class Pickle extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "usersId")
-    private Users users;
+    @JoinColumn(name = "userId")
+    private Users user;
 
-    @OneToMany(mappedBy = "pickle")
+    @OneToMany
     @JoinColumn(name = "pickleId")
     private List<Participant> participants = new ArrayList<>();
 
@@ -71,8 +67,12 @@ public class Pickle extends BaseEntity {
         if (longitude >= MIN_LONGITUDE && longitude <= MAX_LONGITUDE) {
             this.longitude = longitude;
         }
-        if(capacity != null) {
+        if (capacity != null) {
             this.capacity = capacity;
         }
+    }
+
+    public void changeStatus(PickleStatus pickleStatus) {
+        this.pickleStatus = pickleStatus;
     }
 }
