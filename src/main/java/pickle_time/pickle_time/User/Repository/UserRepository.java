@@ -1,7 +1,8 @@
-package pickle_time.pickle_time.User;
+package pickle_time.pickle_time.User.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import pickle_time.pickle_time.User.model.Users;
 
 import java.util.Optional;
 
