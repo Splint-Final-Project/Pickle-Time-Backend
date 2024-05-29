@@ -1,10 +1,16 @@
 package pickle_time.pickle_time.Chat;
 
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import pickle_time.pickle_time.User.User;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,9 +22,21 @@ public class ChatMessage {
 
     @Id
     private String id;
-    private String chatId;
+
+    @DBRef
+    @NotNull
     private String senderId;
-    private String recipientId;
-    private String content;
-    private Date timestamp;
+
+    @DBRef
+    @NotNull
+    private String receiverId;
+
+    @NotBlank
+    private String content; // 필드 이름을 content로 변경
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }

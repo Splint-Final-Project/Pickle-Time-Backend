@@ -2,6 +2,9 @@ package pickle_time.pickle_time.User;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -9,12 +12,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+
     private final JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     public List<User> getUsersForSidebar(String loggedInUserId) {
         return userRepository.findByIdNot(loggedInUserId);
@@ -56,6 +66,18 @@ public class UserService {
 
     public String generateToken(User user) {
         return jwtTokenProvider.generateToken(user.getId());
+    }
+
+//    @Override
+//    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+//        User user = userRepository.findByUsername(username);
+//        return new User(user.getUsername(), user.getPassword(), user.getProfilePic(), user.getGender(), user.getUsername());
+//    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username);
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 
 //    public void saveUser(User user) {

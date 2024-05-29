@@ -17,7 +17,7 @@ public class UsersController {
 
     private final UserService userService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<User>> getUsersForSidebar() {
         try {
             // 현재 인증된 사용자 정보를 가져옵니다.
