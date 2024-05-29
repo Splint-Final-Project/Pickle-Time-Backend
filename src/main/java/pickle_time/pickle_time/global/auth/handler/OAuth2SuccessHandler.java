@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import pickle_time.pickle_time.User.model.Users;
-import pickle_time.pickle_time.global.auth.dto.PrincipalDetails;
+import pickle_time.pickle_time.global.auth.detail.PrincipalDetails;
 import pickle_time.pickle_time.global.jwt.TokenProvider;
 import java.io.IOException;
 
@@ -32,17 +32,18 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         log.info(user.getStatus());
 
-        if (user.getStatus().equals("PENDING")) {
-            String redirectUrl = UriComponentsBuilder.fromUriString(redirectURI + "/signup")
+        String redirectUrl;
+
+        if (user.getStatus().equals("ROLE_PENDING")) {
+            redirectUrl = UriComponentsBuilder.fromUriString(redirectURI + "/signup")
                     .queryParam("accessToken", accessToken)
                     .build().toUriString();
-            response.sendRedirect(redirectUrl);
         }
         else {
-            String redirectUrl = UriComponentsBuilder.fromUriString(redirectURI + "/success")
+            redirectUrl = UriComponentsBuilder.fromUriString(redirectURI + "/success")
                     .queryParam("accessToken", accessToken)
                     .build().toUriString();
-            response.sendRedirect(redirectUrl);
         }
+        response.sendRedirect(redirectUrl);
     }
 }

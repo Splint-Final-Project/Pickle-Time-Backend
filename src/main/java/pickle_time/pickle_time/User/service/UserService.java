@@ -2,12 +2,15 @@ package pickle_time.pickle_time.User.service;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pickle_time.pickle_time.User.dto.response.UserLoginResponse;
+import pickle_time.pickle_time.global.auth.detail.PrincipalDetails;
 import pickle_time.pickle_time.global.auth.service.UserDetailService;
-
-import java.util.List;
 
 import pickle_time.pickle_time.User.Repository.UserRepository;
 import pickle_time.pickle_time.User.dto.response.UserProfileResponse;
@@ -15,6 +18,7 @@ import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.User.dto.request.UserJoinRequest;
 import pickle_time.pickle_time.User.dto.request.UserLoginRequest;
 import pickle_time.pickle_time.User.dto.request.UserUpdateRequest;
+import pickle_time.pickle_time.global.jwt.TokenProvider;
 
 import java.util.Optional;
 
@@ -26,14 +30,21 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserDetailService userDetailService;
+    private final TokenProvider tokenProvider;
 
     /**
      * email 중복 체크
      * 회원가입 기능 구현 시 사용
      * 중복되면 true return
      */
-    public boolean checkEmailDuplicate(String email) {
-        return userRepository.existsByEmail(email);
+    public boolean checkEmailDuplicate(String email, String socialType) {
+        System.out.println(email);
+        System.out.println(socialType);
+        boolean result = userRepository.existsByEmailAndSocialType(email, socialType);
+
+        System.out.println(result);
+
+        return result;
     }
 
     /**
@@ -46,7 +57,7 @@ public class UserService {
     }
 
     public Users join(UserJoinRequest request) {
-        if (checkEmailDuplicate(request.email())) {
+        if (checkEmailDuplicate(request.email(), "GENERAL")) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
         if (checkNicknameDuplicate(request.nickname())) {
@@ -64,22 +75,28 @@ public class UserService {
                 .email(request.email())
                 .company(request.company())
                 .imageUrl(request.imageUrl())
+                .status("ROLE_USER")
+                .socialType("GENERAL")
                 .build();
 
         return userRepository.save(users);
     }
 
-    public Users login(UserLoginRequest userLoginRequest) {
-        Users users = userRepository.findByEmail(userLoginRequest.email())
+    public String login(UserLoginRequest userLoginRequest) {
+        Users users = userRepository.findByEmailAndSocialType(userLoginRequest.email(), "GENERAL")
                 .orElseThrow(() -> new IllegalArgumentException("해당 이메일이 존재하지 않습니다."));
 
         if (!bCryptPasswordEncoder.matches(userLoginRequest.password(), users.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
+        PrincipalDetails principalDetails = (PrincipalDetails) userDetailService.loadUserByUsername(users.getEmail());
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
+
+    return tokenProvider.generateToken(authentication);
 
 
-        return users;
     }
 
     public Optional<Users> findById(Long id) {

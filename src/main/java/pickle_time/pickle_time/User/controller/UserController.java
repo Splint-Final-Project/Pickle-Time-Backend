@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pickle_time.pickle_time.User.dto.response.UserLoginResponse;
 import pickle_time.pickle_time.User.dto.response.UserProfileResponse;
 import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.User.service.UserService;
@@ -31,9 +32,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<String>> login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
-        userService.login(userLoginRequest);
-        return ResponseEntity.ok(new ApiResponse<>(true, "로그인 성공했습니다.", null));
+    public ResponseEntity<ApiResponse<UserLoginResponse>> login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
+        return ResponseEntity.ok(new ApiResponse<>(true,new UserLoginResponse(userService.login(userLoginRequest)), null));
     }
 
     @GetMapping("/{id}")
