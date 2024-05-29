@@ -3,7 +3,7 @@ package pickle_time.pickle_time.User.model;
 import jakarta.persistence.*;
 import lombok.*;
 import pickle_time.pickle_time.global.entity.BaseEntity;
-import pickle_time.pickle_time.Participant.Participant;
+import pickle_time.pickle_time.Participant.model.Participant;
 
 import java.util.List;
 
@@ -18,15 +18,22 @@ public class Users extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String nickname;
 
+    @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "company")
     private String company;
+
+    @Column(name = "socialType")
     private String socialType;
+
+    @Column(name = "imageUrl")
     private String imageUrl;
 
 

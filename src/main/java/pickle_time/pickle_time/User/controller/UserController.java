@@ -42,7 +42,6 @@ public class UserController {
         return user.isPresent() ? ResponseEntity.ok(user.get()) : ResponseEntity.notFound().build();
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UserProfileResponse>> updateUsers(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
         UserProfileResponse updatedUser = userService.updateUsers(id, userUpdateRequest);
