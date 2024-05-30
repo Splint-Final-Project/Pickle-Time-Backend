@@ -108,7 +108,7 @@ public class UserService {
         Users users = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-        users.update(userUpdateRequest.nickname(), userUpdateRequest.email(), userUpdateRequest.company(), userUpdateRequest.imageUrl());
+        users.update(userUpdateRequest.nickname(), userUpdateRequest.company(), userUpdateRequest.imageUrl());
         userRepository.save(users);
 
         return new UserProfileResponse(users.getNickname(), users.getEmail(), users.getCompany(), users.getImageUrl());
