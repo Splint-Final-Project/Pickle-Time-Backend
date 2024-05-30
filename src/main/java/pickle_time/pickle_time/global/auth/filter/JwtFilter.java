@@ -7,13 +7,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pickle_time.pickle_time.global.auth.jwt.TokenProvider;
 
 import java.io.IOException;
+import java.util.Collection;
 
 
 @Component
@@ -29,15 +32,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
             String token = request.getHeader("Authorization");
             if (tokenProvider.validateToken(token)) {
-
                 Authentication authentication = tokenProvider.getAuthentication(token);
-                //            log.info(name);
-                //            log.info(userDetails.getUsername());
-                //            log.info((userDetails.getAuthorities().stream().findFirst()).get().getAuthority());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-
-
         filterChain.doFilter(request, response);
 
     }
