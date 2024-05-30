@@ -3,6 +3,10 @@ package pickle_time.pickle_time.User.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import pickle_time.pickle_time.User.dto.response.UserLoginResponse;
 import pickle_time.pickle_time.User.dto.response.UserProfileResponse;
@@ -20,6 +24,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+//@PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping("/api/v1/user")
 public class UserController {
 
@@ -36,8 +41,23 @@ public class UserController {
         return ResponseEntity.ok(new ApiResponse<>(true,new UserLoginResponse(userService.login(userLoginRequest)), null));
     }
 
+    @GetMapping
+    public ResponseEntity<?> getMe() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        System.out.println(userDetails.getUsername());
+
+        Optional<Users> user = userService.findById(Long.parseLong(userDetails.getUsername()));
+        return user.isPresent() ? ResponseEntity.ok(user.get()) : ResponseEntity.notFound().build();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        System.out.println(userDetails.getUsername());
+
         Optional<Users> user = userService.findById(id);
         return user.isPresent() ? ResponseEntity.ok(user.get()) : ResponseEntity.notFound().build();
     }
