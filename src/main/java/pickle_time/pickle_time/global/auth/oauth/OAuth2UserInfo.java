@@ -1,4 +1,4 @@
-package pickle_time.pickle_time.global.auth.dto;
+package pickle_time.pickle_time.global.auth.oauth;
 
 
 import lombok.Builder;
@@ -9,7 +9,8 @@ import java.util.Map;
 public record OAuth2UserInfo(
         String name,
         String email,
-        String profile
+        String profile,
+        ProviderType providerType
 ) {
     public static  OAuth2UserInfo of(String registrationId, Map<String, Object> attributes)  {
         return switch (registrationId) {
@@ -31,6 +32,7 @@ public record OAuth2UserInfo(
                 .name((String) profile.get("nickname"))
                 .email((String) kakaoAccount.get("email"))
                 .profile((String) profile.get("profile_image_url"))
+                .providerType(ProviderType.KAKAO)
                 .build();
     }
 }

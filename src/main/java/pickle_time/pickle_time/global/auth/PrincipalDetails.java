@@ -1,4 +1,4 @@
-package pickle_time.pickle_time.global.auth.detail;
+package pickle_time.pickle_time.global.auth;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -64,7 +64,7 @@ public record PrincipalDetails(
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(
-                new SimpleGrantedAuthority(user.getStatus())
+                new SimpleGrantedAuthority(user.getRole().toString())
         );
     }
 

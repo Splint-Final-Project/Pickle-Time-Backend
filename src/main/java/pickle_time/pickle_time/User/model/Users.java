@@ -3,6 +3,8 @@ package pickle_time.pickle_time.User.model;
 import jakarta.persistence.*;
 import lombok.*;
 import pickle_time.pickle_time.Participant.Participant;
+import pickle_time.pickle_time.User.Role;
+import pickle_time.pickle_time.global.auth.oauth.ProviderType;
 import pickle_time.pickle_time.global.entity.BaseEntity;
 
 import java.util.List;
@@ -28,14 +30,16 @@ public class Users extends BaseEntity {
     @Column(name = "password")
     private String password;
 
-    private String status;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 
     @Column(name = "company")
     private String company;
 
     @Column(name = "socialType")
-    private String socialType;
+    private ProviderType providerType;
 
     @Column(name = "imageUrl")
     private String imageUrl;
@@ -62,12 +66,12 @@ public class Users extends BaseEntity {
     }
 
 
-    public Users(String email, String nickname,  String socialType, String imageUrl) {
+    public Users(String email, String nickname,  ProviderType providerType, String imageUrl) {
         this.email = email;
         this.nickname = nickname;
-        this.socialType = socialType;
+        this.providerType = providerType;
         this.imageUrl = imageUrl;
-        this.status = "ROLE_PENDING";
+        this.role = Role.ROLE_PENDING;
     }
 
 }

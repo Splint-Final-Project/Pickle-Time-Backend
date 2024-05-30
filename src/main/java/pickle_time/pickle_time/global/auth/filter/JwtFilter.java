@@ -1,6 +1,5 @@
 package pickle_time.pickle_time.global.auth.filter;
 
-import com.sun.security.auth.UserPrincipal;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,14 +9,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pickle_time.pickle_time.global.auth.detail.PrincipalDetails;
 import pickle_time.pickle_time.global.auth.exception.JwtAuthenticationException;
-import pickle_time.pickle_time.global.jwt.TokenProvider;
+import pickle_time.pickle_time.global.auth.jwt.TokenProvider;
 
 import java.io.IOException;
-import java.security.Principal;
+import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
@@ -26,10 +27,17 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
 
+    private static AntPathMatcher matcher = new AntPathMatcher();
+    private static final String[] PERMIT_URL = {
+            "/", "/oauth2/authorization/**",  "api/v1/user/join", "api/v1/user/login"
+    };
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         try {
+
+
             String token = request.getHeader("Authorization");
             if (!tokenProvider.validateToken(token)) throw new JwtAuthenticationException("Invalid token");
             log.info("TokenFilter Token : " , token);

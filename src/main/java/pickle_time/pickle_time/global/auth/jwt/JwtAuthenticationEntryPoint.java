@@ -1,4 +1,4 @@
-package pickle_time.pickle_time.global.jwt;
+package pickle_time.pickle_time.global.auth.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
