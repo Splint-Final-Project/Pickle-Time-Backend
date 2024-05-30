@@ -3,10 +3,7 @@ package pickle_time.pickle_time.global.auth.jwt;
 
 
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import pickle_time.pickle_time.global.auth.exception.JwtAuthenticationException;
 
 import javax.crypto.SecretKey;
 import java.util.Collections;
@@ -45,6 +41,9 @@ public class TokenProvider {
         log.info(authorities);
 
         Date accessTokenExpiresIn = new Date(now + 86400000);
+
+        log.info(secretKey.toString());
+
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
@@ -73,18 +72,21 @@ public class TokenProvider {
                 claims.get("auth").toString()));
     }
 
-    public boolean validateToken(String token) throws JwtAuthenticationException {
+    public boolean validateToken(String token)  {
 
-        if (token == null || token.length() == 0) {
+        try {
+            Claims claims = parseClaims(token);
+            System.out.println(claims.get("auth").toString());
+            return claims.getExpiration().after(new Date());
+        } catch (Exception e) {
+            log.error("Token Validate Error.");
             return false;
         }
-        Claims claims = parseClaims(token);
-        System.out.println(claims.get("auth").toString());
-        return claims.getExpiration().after(new Date());
     }
 
     // accessToken
     private Claims parseClaims(String accessToken) {
+        log.info(secretKey.toString());
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(secretKey)

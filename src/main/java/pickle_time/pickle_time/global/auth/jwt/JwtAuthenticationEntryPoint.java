@@ -12,6 +12,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import pickle_time.pickle_time.global.ErrorMessage;
+import pickle_time.pickle_time.global.dto.ErrorResponse;
+import pickle_time.pickle_time.global.exception.ErrorCode;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,12 +25,15 @@ import java.time.format.DateTimeFormatter;
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        log.error(authException.getMessage());
-        this.sendErrorMessage(new BadCredentialsException("로그인이 필요합니다.(인증 실패)"), response);
+
+        String token = request.getHeader("Authorization");
+        this.sendErrorMessage(response, token);
+
     }
 
-    private void sendErrorMessage(Exception authenticationException,
+    private void sendErrorMessage(
                                   HttpServletResponse response
+                                  , String token
     ) {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
@@ -42,7 +47,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
             javaTimeModule.addSerializer(localDateTimeSerializer); // 직렬화 방식 add
             ObjectMapper objectMapper = new ObjectMapper().registerModule(javaTimeModule); // LocalDateTime serialize
-            objectMapper.writeValue(os, new ErrorMessage(HttpStatus.UNAUTHORIZED, authenticationException.getMessage()));
+
+            if (token != null) objectMapper.writeValue(os, ErrorResponse.of(ErrorCode.INVALID_TOKEN));
+            else objectMapper.writeValue(os, ErrorResponse.of(ErrorCode.NOT_FOUND_TOKEN));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
