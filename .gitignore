@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 
 src/main/resources/application-auth.properties
+src/main/resources/application-test-auth.yml
 
 ### STS ###
 .apt_generated
