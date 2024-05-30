@@ -9,6 +9,9 @@ import pickle_time.pickle_time.Pickle.dto.request.UpdatePickleRequest;
 import pickle_time.pickle_time.Pickle.model.Pickle;
 import pickle_time.pickle_time.Pickle.model.PickleStatus;
 import pickle_time.pickle_time.Pickle.service.PickleService;
+import pickle_time.pickle_time.Review.dto.ReviewRequest;
+import pickle_time.pickle_time.Review.model.Review;
+import pickle_time.pickle_time.Review.service.ReviewService;
 import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.global.dto.ApiResponse;
 
@@ -22,6 +25,7 @@ import java.util.Optional;
 public class PickleController {
 
     private final PickleService pickleService;
+    private final ReviewService reviewService;
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<String>> createPickle(@Valid @RequestBody CreatePickleRequest request) {
@@ -62,5 +66,22 @@ public class PickleController {
     public ResponseEntity<ApiResponse<List<Pickle>>> getAllPickles() {
         List<Pickle> pickles = pickleService.findAll();
         return ResponseEntity.ok(new ApiResponse<>(true, pickles, null));
+    }
+    @PostMapping("/{pickleId}/review")
+    public ResponseEntity<ApiResponse<Review>> createReview(@PathVariable Long pickleId, @RequestParam Long userId, @Valid @RequestBody ReviewRequest request) {
+        Review review = reviewService.createReview(pickleId, userId, request);
+        return ResponseEntity.ok(new ApiResponse<>(true, review, null));
+    }
+
+    @GetMapping("/{pickleId}/reviews")
+    public ResponseEntity<ApiResponse<List<Review>>> getReviewsByPickleId(@PathVariable Long pickleId) {
+        List<Review> reviews = reviewService.getReviewsByPickleId(pickleId);
+        return ResponseEntity.ok(new ApiResponse<>(true, reviews, null));
+    }
+
+    @DeleteMapping("/review/{reviewId}")
+    public ResponseEntity<ApiResponse<String>> deleteReview(@PathVariable Long reviewId, @RequestParam Long userId) {
+        reviewService.deleteReview(reviewId, userId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "리뷰가 삭제되었습니다.", null));
     }
 }
