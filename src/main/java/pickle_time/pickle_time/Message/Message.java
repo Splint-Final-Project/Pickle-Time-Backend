@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pickle_time.pickle_time.conversation.Conversation;
+//import pickle_time.pickle_time.conversation.Conversation;
 
 @Entity
 @Getter
@@ -15,7 +15,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "ConversationId")
-    private Conversation conversation;
+//    @ManyToOne
+//    @JoinColumn(name = "ConversationId")
+//    private Conversation conversation;
 }

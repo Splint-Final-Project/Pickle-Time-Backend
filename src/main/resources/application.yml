@@ -27,7 +27,6 @@ spring:
 #        dialect: org.hibernate.dialect.H2Dialect
 #        show_sql: true
 
-
   security:
     oauth2:
       client:
@@ -52,7 +51,7 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
 server:
-  port: 8088
+  port: 8080
 logging:
   level:
     org:
