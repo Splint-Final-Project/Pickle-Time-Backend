@@ -71,7 +71,7 @@ public class UserService {
 
         Users users = Users.builder()
                 .password(encodedPassword)
-//                .nickname(request.nickname())
+                .nickname(request.nickname())
                 .email(request.email())
 //                .company(request.company())
 //                .imageUrl(request.imageUrl())
