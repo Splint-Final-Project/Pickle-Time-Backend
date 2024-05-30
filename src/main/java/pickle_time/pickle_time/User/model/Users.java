@@ -24,7 +24,7 @@ public class Users extends BaseEntity {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String nickname;
 
     @Column(name = "password")
@@ -50,13 +50,13 @@ public class Users extends BaseEntity {
     private List<Participant> participants;
 
 
-    public void update(String nickname, String email, String company,String imageUrl) {
+    public void update(String nickname, String company,String imageUrl) {
         if (nickname != null) {
             this.nickname = nickname;
         }
-        if (email != null) {
-            this.email = email;
-        }
+        // if (email != null) {
+        //     this.email = email;
+        // }
         if (company != null) {
             this.company = company;
         }

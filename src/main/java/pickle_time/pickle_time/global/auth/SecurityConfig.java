@@ -26,7 +26,11 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
     private static final String[] PERMIT_URL = {
-            "/", "/oauth2/authorization/**",  "api/v1/user/join", "api/v1/user/login"
+
+
+            "/", "/oauth2/authorization/**",  "api/v1/user/join", "/signup", "/auth/success", "api/v1/user/login",
+            "/verify_iamport/*"
+
     };
 
     @Bean
