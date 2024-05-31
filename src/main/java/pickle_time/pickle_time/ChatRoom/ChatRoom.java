@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import pickle_time.pickle_time.Chat.ChatMessage;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,11 +23,9 @@ public class ChatRoom {
     @Id
     private String id;
 
-    @DBRef
     private List<String> participants;
 
-    @DBRef
-    private List<ChatMessage> messages;
+    private List<String> messages = new ArrayList<>(); //
 
     @CreatedDate
     private LocalDateTime createdAt;

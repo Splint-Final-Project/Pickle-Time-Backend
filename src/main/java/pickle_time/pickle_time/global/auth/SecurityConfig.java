@@ -34,7 +34,7 @@ public class SecurityConfig {
 
     private static final String[] PERMIT_URL = {
             "/", "/oauth2/authorization/**",  "api/v1/user/join", "/signup", "/auth/success", "api/v1/user/login",
-            "/verify_iamport/*"
+            "/verify_iamport/*", "/api/v1/user/messages/"
     };
 
     @Bean
@@ -51,25 +51,25 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
 
                 // cors : 추후에는 밑에 주석에 있는 것을 활성화 해야 합니다.
-                .cors(AbstractHttpConfigurer::disable)
-//                .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
-//
-//                    @Override
-//                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-//
-//                        CorsConfiguration configuration = new CorsConfiguration();
-//
-//                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
-//                        configuration.setAllowedMethods(Collections.singletonList("*"));
-//                        configuration.setAllowCredentials(true);
-//                        configuration.setAllowedHeaders(Collections.singletonList("*"));
-//                        configuration.setMaxAge(3600L);
-//
-//                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-//
-//                        return configuration;
-//                    }
-//                })))
+//                .cors(AbstractHttpConfigurer::disable)
+                .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+
+                        CorsConfiguration configuration = new CorsConfiguration();
+
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+                        configuration.setAllowedMethods(Collections.singletonList("*"));
+                        configuration.setAllowCredentials(true);
+                        configuration.setAllowedHeaders(Collections.singletonList("*"));
+                        configuration.setMaxAge(3600L);
+
+                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+
+                        return configuration;
+                    }
+                })))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)

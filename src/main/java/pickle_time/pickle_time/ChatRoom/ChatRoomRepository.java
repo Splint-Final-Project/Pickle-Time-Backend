@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface ChatRoomRepository extends MongoRepository<ChatRoom, String> {
 
     @Query("{ 'participants': { $all: [?0, ?1] } }")
-    Optional<ChatRoom> findByParticipants(List<String> participantIds);
+    Optional<ChatRoom> findByParticipants(String participant1, String participant2);
 
 //    Optional<ChatRoom> findByParticipants(String senderId, String receiverId);
 }
