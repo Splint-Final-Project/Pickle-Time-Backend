@@ -56,8 +56,6 @@ public class ChatController {
 
     @PostMapping("/send/{id}")
     public ResponseEntity<String> sendMessage(@PathVariable("id") String receiverId, @RequestBody ChatMessage chatMessage) {
-        System.out.println("Received ChatMessage: " + chatMessage);
-
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             UserDetails user = (UserDetails) authentication.getPrincipal();
@@ -93,20 +91,20 @@ public class ChatController {
         }
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<List<ChatMessage>> getMessages(@PathVariable("id") String userToChatId) {
-//        try {
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            String senderId = authentication.getName(); // Assuming the user ID is stored as the username
-//
-//            // 메시지를 받는 서비스 로직을 호출
-//            List<ChatMessage> messages = chatMessageService.getMessages(senderId, userToChatId);
-//
-//            return ResponseEntity.ok(messages);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(500).body(null);
-//        }
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<List<ChatMessage>> getMessages(@PathVariable("id") String userToChatId) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserDetails user = (UserDetails) authentication.getPrincipal(); // Assuming the user ID is stored as the username
+
+            // 메시지를 받는 서비스 로직을 호출
+            List<ChatMessage> chatMessagesList = chatMessageService.getMessages(user.getUsername(), userToChatId);
+
+            return ResponseEntity.status(201).body(chatMessagesList);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
 
 //    @MessageMapping("/chat")
 //    public void processMessage(@Payload ChatMessage chatMessage) {

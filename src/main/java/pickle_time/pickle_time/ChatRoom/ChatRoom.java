@@ -33,6 +33,9 @@ public class ChatRoom {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+//    @DBRef
+//    private List<ChatMessage> messages;
+
     // List<User>를 인자로 받는 생성자 추가
     public ChatRoom(List<String> participants) {
         this.participants = participants;

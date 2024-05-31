@@ -40,8 +40,6 @@ public class ChatMessage {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @DBRef
-    private ChatRoom chatRoom;
 
 //    public ChatMessage(String senderId, String receiverId) {
 //        this.senderId = senderId;

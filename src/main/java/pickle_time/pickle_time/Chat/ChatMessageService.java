@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import pickle_time.pickle_time.ChatRoom.ChatRoom;
 import pickle_time.pickle_time.ChatRoom.ChatRoomRepository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,12 +52,17 @@ public class ChatMessageService {
         chatRoomRepository.save(chatRoom);
     }
 
-//    public List<ChatMessage> getMessages(String senderId, String userToChatId) {
-//        User sender = userRepository.findById(senderId).orElseThrow(() -> new IllegalArgumentException("Sender not found"));
-//        User receiver = userRepository.findById(userToChatId).orElseThrow(() -> new IllegalArgumentException("Receiver not found"));
-//
-//        return chatRoomRepository.findByParticipants(List.of(senderId, userToChatId))
-//                .map(ChatRoom::getMessages)
-//                .orElse(List.of());
-//    }
+    public List<ChatMessage> getMessages(String senderId, String receiverId) {
+        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findByParticipants(senderId, receiverId);
+        List<String> messagesIdsInChatRoom = optionalChatRoom.get().getMessages();
+
+        List<ChatMessage> chatMessagesList = new ArrayList<>();
+        for (String messageId : messagesIdsInChatRoom) {
+            Optional<ChatMessage> optionalChatMessage = messageRepository.findChatMessageById(messageId);
+            optionalChatMessage.ifPresent(chatMessagesList::add);
+
+            return chatMessagesList;
+        }
+        return chatMessagesList;
+    }
 }
