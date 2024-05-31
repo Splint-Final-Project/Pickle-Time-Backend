@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pickle_time.pickle_time.User.Repository.UserRepository;
 import pickle_time.pickle_time.User.model.Users;
+import pickle_time.pickle_time.global.dto.ApiResponse;
 //import pickle_time.pickle_time.User.UserController;
 
 import java.util.List;
@@ -31,9 +33,6 @@ public class ChatController {
 
     @Autowired
     private ChatMessageService chatMessageService;
-
-    @Autowired
-    private UserRepository userRepository;
 
 //    @PostMapping("/send/{id}")
 //    public ResponseEntity<ChatMessage> sendMessage(@PathVariable("id") String receiverId, @RequestBody ChatMessage chatMessage) {
@@ -92,15 +91,15 @@ public class ChatController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<ChatMessage>> getMessages(@PathVariable("id") String userToChatId) {
+    public ResponseEntity<ApiResponse<List<ChatMessage>>> getMessages(@PathVariable("id") String userToChatId) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             UserDetails user = (UserDetails) authentication.getPrincipal(); // Assuming the user ID is stored as the username
 
             // 메시지를 받는 서비스 로직을 호출
-            List<ChatMessage> chatMessagesList = chatMessageService.getMessages(user.getUsername(), userToChatId);
-
-            return ResponseEntity.status(201).body(chatMessagesList);
+            Page<ChatMessage> chatMessagesList = chatMessageService.getMessages(user.getUsername(), userToChatId);
+            System.out.println(chatMessagesList);
+            return ResponseEntity.ok(new ApiResponse<>(true, chatMessagesList.getContent(), null));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }

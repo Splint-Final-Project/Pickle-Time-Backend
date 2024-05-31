@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,17 +55,20 @@ public class ChatMessageService {
         chatRoomRepository.save(chatRoom);
     }
 
-    public List<ChatMessage> getMessages(String senderId, String receiverId) {
+    public Page<ChatMessage> getMessages(String senderId, String receiverId) {
         Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findByParticipants(senderId, receiverId);
         List<String> messagesIdsInChatRoom = optionalChatRoom.get().getMessages();
 
-        List<ChatMessage> chatMessagesList = new ArrayList<>();
-        for (String messageId : messagesIdsInChatRoom) {
-            Optional<ChatMessage> optionalChatMessage = messageRepository.findChatMessageById(messageId);
-            optionalChatMessage.ifPresent(chatMessagesList::add);
-
-            return chatMessagesList;
-        }
-        return chatMessagesList;
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<ChatMessage> messagesWithPage = messageRepository.findAllByIdIn(messagesIdsInChatRoom, pageable);
+        System.out.println(messagesWithPage.getContent());
+//        List<ChatMessage> chatMessagesList = new ArrayList<>();
+//        for (String messageId : messagesIdsInChatRoom) {
+//            Optional<ChatMessage> optionalChatMessage = messageRepository.findChatMessageById(messageId);
+//            optionalChatMessage.ifPresent(chatMessagesList::add);
+//
+////            return chatMessagesList;
+//        }
+        return messagesWithPage;
     }
 }
