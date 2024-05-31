@@ -15,10 +15,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import pickle_time.pickle_time.global.auth.filter.JwtFilter;
-import pickle_time.pickle_time.global.auth.handler.OAuth2FailerHandler;
-import pickle_time.pickle_time.global.auth.handler.OAuth2SuccessHandler;
-import pickle_time.pickle_time.global.auth.service.UserOAuth2UserService;
-import pickle_time.pickle_time.global.jwt.JwtAuthenticationEntryPoint;
+import pickle_time.pickle_time.global.auth.oauth.OAuth2SuccessHandler;
+import pickle_time.pickle_time.global.auth.oauth.UserOAuth2UserService;
+import pickle_time.pickle_time.global.auth.jwt.JwtAuthenticationEntryPoint;
 
 import java.util.Collections;
 
@@ -29,10 +28,11 @@ public class SecurityConfig {
 
     private final UserOAuth2UserService userOAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
-    private final OAuth2FailerHandler oAuth2FailerHandler;
     private final JwtFilter jwtFilter;
 
     private static final String[] PERMIT_URL = {
+
+
             "/", "/oauth2/authorization/**",  "api/v1/user/join", "/signup", "/auth/success", "api/v1/user/login",
             "/verify_iamport/*", "/api/v1/user/messages/"
     };
@@ -43,7 +43,6 @@ public class SecurityConfig {
                 // error endpoint를 열어줘야 함, favicon.ico 추가!
                 .requestMatchers("/error", "/favicon.ico");
     }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -86,16 +85,13 @@ public class SecurityConfig {
                 .oauth2Login(oauth ->
                         oauth.userInfoEndpoint(c -> c.userService(userOAuth2UserService))
                                 .successHandler(oAuth2SuccessHandler)
-                                .failureHandler(oAuth2FailerHandler)
+                                
                 )
 
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling((exceptions) -> exceptions
                                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                         );
-
-
-
 
 
         return http.build();

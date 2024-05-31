@@ -2,8 +2,7 @@ package pickle_time.pickle_time.global.auth.exception;
 
 import lombok.Getter;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import pickle_time.pickle_time.global.auth.dto.OAuth2UserInfo;
+import pickle_time.pickle_time.global.auth.oauth.OAuth2UserInfo;
 
 @Getter
 public class UserNotExistException extends AuthenticationException {
