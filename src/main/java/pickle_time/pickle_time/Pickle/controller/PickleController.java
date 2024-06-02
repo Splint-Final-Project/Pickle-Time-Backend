@@ -19,6 +19,7 @@ import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.global.dto.ApiResponse;
 
 import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -31,9 +32,9 @@ public class PickleController {
     private final ReviewService reviewService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<String>> createPickle( @Valid @RequestBody CreatePickleRequest request) {
+    public ResponseEntity<ApiResponse<String>> createPickle(@RequestBody @Valid CreatePickleRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Long userId = Long.parseLong(userDetails.getUsername());
         pickleService.createPickle(userId, request);
         return ResponseEntity.ok(new ApiResponse<>(true, "피클 생성이 완료되었습니다.", null));
@@ -42,10 +43,11 @@ public class PickleController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getPickleById(@PathVariable Long id) {
         Optional<Pickle> pickle = pickleService.findById(id);
-        return pickle.isPresent() ? ResponseEntity.ok(pickle.get()) : ResponseEntity.notFound().build();}
+        return pickle.isPresent() ? ResponseEntity.ok(pickle.get()) : ResponseEntity.notFound().build();
+    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Pickle>> updatePickle(@PathVariable Long id, @Valid @RequestBody UpdatePickleRequest request) {
+    public ResponseEntity<ApiResponse<Pickle>> updatePickle(@PathVariable Long id, @RequestBody @Valid UpdatePickleRequest request) {
         Pickle updatedPickle = pickleService.updatePickle(id, request);
         return ResponseEntity.ok(new ApiResponse<>(true, updatedPickle, null));
     }
@@ -75,7 +77,7 @@ public class PickleController {
     }
 
     @PostMapping("/{pickleId}/review")
-    public ResponseEntity<ApiResponse<Review>> createReview(@PathVariable Long pickleId, @RequestParam Long userId, @Valid @RequestBody ReviewRequest request) {
+    public ResponseEntity<ApiResponse<Review>> createReview(@PathVariable Long pickleId, @RequestParam Long userId, @RequestBody @Valid ReviewRequest request) {
         Review review = reviewService.createReview(pickleId, userId, request);
         return ResponseEntity.ok(new ApiResponse<>(true, review, null));
     }
