@@ -55,7 +55,7 @@ public class Users extends BaseEntity {
     private List<Scrap> scraps;
 
 
-    public void update(String nickname, String company,String imageUrl) {
+    public void update(String nickname, String company, String imageUrl) {
 
         if (nickname != null) {
             System.out.println(nickname);
@@ -67,14 +67,11 @@ public class Users extends BaseEntity {
         }
         if (imageUrl != null) {
             System.out.println(imageUrl);
-            this.imageUrl  = imageUrl;
+            this.imageUrl = imageUrl;
         }
     }
 
-
-
-
-    public Users(String email, String nickname,  ProviderType providerType, String imageUrl) {
+    public Users(String email, String nickname, ProviderType providerType, String imageUrl) {
         this.email = email;
         this.nickname = nickname;
         this.providerType = providerType;

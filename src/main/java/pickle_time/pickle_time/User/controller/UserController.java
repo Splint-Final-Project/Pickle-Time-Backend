@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pickle_time.pickle_time.Scrap.dto.ScrapResponse;
 import pickle_time.pickle_time.Scrap.model.Scrap;
@@ -24,6 +25,7 @@ import pickle_time.pickle_time.User.dto.request.UserUpdateRequest;
 import pickle_time.pickle_time.global.dto.ApiResponse;
 
 import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,7 +46,7 @@ public class UserController {
             description = "회원가입"
     )
     @PostMapping("/join")
-    public ResponseEntity<ApiResponse<String>> join(@Valid @RequestBody UserJoinRequest userJoinRequest) {
+    public ResponseEntity<ApiResponse<String>> join(@RequestBody @Valid UserJoinRequest userJoinRequest) {
         userService.join(userJoinRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "회원가입 성공했습니다.", null));
     }
@@ -55,8 +57,8 @@ public class UserController {
             description = "일반 로그인"
     )
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<UserLoginResponse>> login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
-        return ResponseEntity.ok(new ApiResponse<>(true,new UserLoginResponse(userService.login(userLoginRequest)), null));
+    public ResponseEntity<ApiResponse<UserLoginResponse>> login(@RequestBody @Valid UserLoginRequest userLoginRequest) {
+        return ResponseEntity.ok(new ApiResponse<>(true, new UserLoginResponse(userService.login(userLoginRequest)), null));
     }
 
 
@@ -67,7 +69,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<?> getMe() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         Users user = userService.findById(Long.parseLong(userDetails.getUsername()))
                 .orElseThrow(() -> new IllegalStateException("해당 유저가 존재하지 않습니다."));
@@ -79,7 +81,6 @@ public class UserController {
     }
 
 
-
     @Operation(
             summary = "찜 목록",
             description = "로그인한 유저의 짬 목록 조회"
@@ -87,7 +88,7 @@ public class UserController {
     @GetMapping("/pickle")
     public ResponseEntity<?> getMyScrap() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Long userId = Long.parseLong(userDetails.getUsername());
 
         List<Scrap> scraps = userService.findScrapsById(userId);
@@ -102,13 +103,13 @@ public class UserController {
             description = "로그인한 유저의 정보를 수정"
     )
     @PutMapping
-    public ResponseEntity<?> updateMe(@Valid @RequestBody UserUpdateRequest userUpdateRequest) {
+    public ResponseEntity<?> updateMe(@RequestBody @Valid UserUpdateRequest userUpdateRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Long userId = Long.parseLong(userDetails.getUsername());
 
         UserProfileResponse userProfileResponse = userService.updateUsers(userId, userUpdateRequest);
-        return ResponseEntity.ok(new ApiResponse<>(true,userProfileResponse,null));
+        return ResponseEntity.ok(new ApiResponse<>(true, userProfileResponse, null));
     }
 
 
@@ -119,11 +120,11 @@ public class UserController {
     @DeleteMapping
     public ResponseEntity<?> deleteMe() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Long userId = Long.parseLong(userDetails.getUsername());
 
         userService.deleteUsers(userId);
-        return ResponseEntity.ok(new ApiResponse<>(true, "회원 삭제에 성공했습니다." ,null));
+        return ResponseEntity.ok(new ApiResponse<>(true, "회원 삭제에 성공했습니다.", null));
     }
 
 
@@ -131,7 +132,7 @@ public class UserController {
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         System.out.println(userDetails.getUsername());
 
         Optional<Users> user = userService.findById(id);
@@ -139,7 +140,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserProfileResponse>> updateUsers(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
+    public ResponseEntity<ApiResponse<UserProfileResponse>> updateUsers(@PathVariable Long id, @RequestBody @Valid UserUpdateRequest userUpdateRequest) {
         UserProfileResponse updatedUser = userService.updateUsers(id, userUpdateRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, updatedUser, null));
     }

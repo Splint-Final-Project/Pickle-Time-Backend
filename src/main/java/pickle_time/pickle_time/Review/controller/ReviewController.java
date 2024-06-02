@@ -9,6 +9,7 @@ import pickle_time.pickle_time.Review.service.ReviewService;
 import pickle_time.pickle_time.global.dto.ApiResponse;
 
 import jakarta.validation.Valid;
+
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<Review>> createReview(@RequestParam Long pickleId, @RequestParam Long userId, @Valid @RequestBody ReviewRequest request) {
+    public ResponseEntity<ApiResponse<Review>> createReview(@RequestParam Long pickleId, @RequestParam Long userId, @RequestBody @Valid ReviewRequest request) {
         Review review = reviewService.createReview(pickleId, userId, request);
         return ResponseEntity.ok(new ApiResponse<>(true, review, null));
     }
