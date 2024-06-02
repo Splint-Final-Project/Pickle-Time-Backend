@@ -38,11 +38,7 @@ public class TokenProvider {
         long now = (new Date()).getTime();
 
         String authorities = authentication.getAuthorities().stream().findFirst().get().getAuthority();
-        log.info(authorities);
-
         Date accessTokenExpiresIn = new Date(now + 86400000);
-
-        log.info(secretKey.toString());
 
         return Jwts.builder()
                 .setSubject(authentication.getName())
@@ -76,10 +72,8 @@ public class TokenProvider {
 
         try {
             Claims claims = parseClaims(token);
-            System.out.println(claims.get("auth").toString());
             return claims.getExpiration().after(new Date());
         } catch (Exception e) {
-            log.error("Token Validate Error.");
             return false;
         }
     }
