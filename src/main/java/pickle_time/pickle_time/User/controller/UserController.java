@@ -8,8 +8,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import pickle_time.pickle_time.Scrap.dto.ScrapResponse;
+import pickle_time.pickle_time.Scrap.model.Scrap;
+import pickle_time.pickle_time.User.dto.response.UserInfoResponse;
 import pickle_time.pickle_time.User.dto.response.UserLoginResponse;
 import pickle_time.pickle_time.User.dto.response.UserProfileResponse;
+import pickle_time.pickle_time.User.dto.response.UserScrapResponse;
 import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.User.service.UserService;
 import pickle_time.pickle_time.User.dto.request.UserJoinRequest;
@@ -45,11 +49,48 @@ public class UserController {
     public ResponseEntity<?> getMe() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-        System.out.println(userDetails.getUsername());
 
-        Optional<Users> user = userService.findById(Long.parseLong(userDetails.getUsername()));
-        return user.isPresent() ? ResponseEntity.ok(user.get()) : ResponseEntity.notFound().build();
+        Users user = userService.findById(Long.parseLong(userDetails.getUsername()))
+                .orElseThrow(() -> new IllegalStateException("해당 유저가 존재하지 않습니다."));
+
+        List<Scrap> scraps = user.getScraps();
+        List<ScrapResponse> scrapResponses = scraps.stream().map(scrap -> new ScrapResponse(scrap.getPickle().getTitle(), scrap.getPickle().getId())).toList();
+        UserInfoResponse userInfoResponse = new UserInfoResponse(user.getId(), user.getNickname(), user.getRole(), user.getProviderType(), user.getCompany(), user.getImageUrl(), scrapResponses);
+        return ResponseEntity.ok(new ApiResponse<>(true, userInfoResponse, null));
     }
+
+    @GetMapping("/pickle")
+    public ResponseEntity<?> getMyScrap() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        Long userId = Long.parseLong(userDetails.getUsername());
+
+        List<Scrap> scraps = userService.findScrapsById(userId);
+        List<ScrapResponse> scrapResponses = scraps.stream().map(scrap -> new ScrapResponse(scrap.getPickle().getTitle(), scrap.getPickle().getId())).toList();
+
+        return ResponseEntity.ok(new ApiResponse<>(true, new UserScrapResponse(userId, scrapResponses), null));
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateMe(@Valid @RequestBody UserUpdateRequest userUpdateRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        Long userId = Long.parseLong(userDetails.getUsername());
+
+        UserProfileResponse userProfileResponse = userService.updateUsers(userId, userUpdateRequest);
+        return ResponseEntity.ok(new ApiResponse<>(true,userProfileResponse,null));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteMe() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        Long userId = Long.parseLong(userDetails.getUsername());
+
+        userService.deleteUsers(userId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "회원 삭제에 성공했습니다." ,null));
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {

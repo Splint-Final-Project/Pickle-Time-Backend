@@ -2,7 +2,8 @@ package pickle_time.pickle_time.User.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pickle_time.pickle_time.Participant.Participant;
+import pickle_time.pickle_time.Participant.model.Participant;
+import pickle_time.pickle_time.Scrap.model.Scrap;
 import pickle_time.pickle_time.User.Role;
 import pickle_time.pickle_time.global.auth.oauth.ProviderType;
 import pickle_time.pickle_time.global.entity.BaseEntity;
@@ -49,21 +50,28 @@ public class Users extends BaseEntity {
     @JoinColumn(name = "usersId")
     private List<Participant> participants;
 
+    @OneToMany
+    @JoinColumn(name = "userId")
+    private List<Scrap> scraps;
+
 
     public void update(String nickname, String company,String imageUrl) {
+
         if (nickname != null) {
+            System.out.println(nickname);
             this.nickname = nickname;
         }
-        // if (email != null) {
-        //     this.email = email;
-        // }
         if (company != null) {
+            System.out.println(company);
             this.company = company;
         }
         if (imageUrl != null) {
-            this.imageUrl = imageUrl;
+            System.out.println(imageUrl);
+            this.imageUrl  = imageUrl;
         }
     }
+
+
 
 
     public Users(String email, String nickname,  ProviderType providerType, String imageUrl) {

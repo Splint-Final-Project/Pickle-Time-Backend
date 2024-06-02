@@ -9,5 +9,4 @@ import java.util.List;
 @Repository
 public interface PickleRepository extends JpaRepository<Pickle,Long> {
 
-    List<Pickle> findByParticipantsUserId(Long userId);
 }

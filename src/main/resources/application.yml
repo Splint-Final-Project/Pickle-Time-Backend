@@ -3,19 +3,23 @@ spring:
     import: "classpath:application-auth.yml"
 
   datasource:
-    url: jdbc:h2:tcp://localhost/~/test
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:tcp://localhost/~/test
+    url: jdbc:mysql://localhost:3306/pickle_time?serverTimezone=Asia/Seoul
+#    username: sa
+    username: root
+    password: 251414
+#    driver-class-name: org.h2.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+#    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
-#        dialect: org.hibernate.dialect.H2Dialect
+
+  #        dialect: org.hibernate.dialect.H2Dialect
 #        show_sql: true
 
 
