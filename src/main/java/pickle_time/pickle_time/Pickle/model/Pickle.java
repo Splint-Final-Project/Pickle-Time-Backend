@@ -2,6 +2,7 @@ package pickle_time.pickle_time.Pickle.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pickle_time.pickle_time.Review.model.Review;
 import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.Participant.model.Participant;
 import pickle_time.pickle_time.global.entity.BaseEntity;
@@ -75,9 +76,16 @@ public class Pickle extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PickleStatus pickleStatus;
 
+
+    @OneToMany(mappedBy = "pickle", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+
+
+
     public void pickleUpdate(String title, String content, double latitude, double longitude,
                        PickleType pickleType, LocalDate startDate, LocalDate endDate, Integer price,
                        Integer auth, String category, Integer capacity) {
+
         if (title != null) {
             this.title = title;
         }
