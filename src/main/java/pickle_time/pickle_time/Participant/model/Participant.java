@@ -1,4 +1,4 @@
-package pickle_time.pickle_time.Participant;
+package pickle_time.pickle_time.Participant.model;
 
 
 import jakarta.persistence.*;

@@ -24,8 +24,8 @@ public class PickleController {
     private final PickleService pickleService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<String>> createPickle(@Valid @RequestBody CreatePickleRequest request) {
-        pickleService.createPickle(request);
+    public ResponseEntity<ApiResponse<String>> createPickle(Long id, @Valid @RequestBody CreatePickleRequest request) {
+        pickleService.createPickle(id, request);
         return ResponseEntity.ok(new ApiResponse<>(true, "피클 생성이 완료되었습니다.", null));
     }
 
@@ -46,7 +46,7 @@ public class PickleController {
         return ResponseEntity.ok(new ApiResponse<>(true, updatedPickle, null));
     }
 
-    @PutMapping("/{id}/close")
+    @PutMapping("/{id}/end")
     public ResponseEntity<ApiResponse<Pickle>> endPickle(@PathVariable Long id) {
         Pickle endPickle = pickleService.endPickle(id);
         return ResponseEntity.ok(new ApiResponse<>(true, endPickle, null));
@@ -63,4 +63,11 @@ public class PickleController {
         List<Pickle> pickles = pickleService.findAll();
         return ResponseEntity.ok(new ApiResponse<>(true, pickles, null));
     }
+
+    @GetMapping("/user/{userId}/myPickles")
+    public ResponseEntity<ApiResponse<List<Pickle>>> getAllMyPickles(@PathVariable Long userId) {
+        List<Pickle> pickles = pickleService.findPicklesByUserParticipation(userId);
+        return ResponseEntity.ok(new ApiResponse<>(true, pickles, null));
+    }
+
 }
