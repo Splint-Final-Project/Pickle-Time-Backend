@@ -1,37 +1,38 @@
-package pickle_time.pickle_time.global.jwt;
+package pickle_time.pickle_time.global.auth.jwt;
 
 
 
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import pickle_time.pickle_time.global.auth.exception.JwtAuthenticationException;
-import pickle_time.pickle_time.global.auth.service.UserDetailService;
 
 import javax.crypto.SecretKey;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class TokenProvider {
 
-    private static String key = "64461f01e1af406da538b9c48d801ce59142452199ff112fb5404c8e7e98e3ff";
-    private SecretKey secretKey = Keys.hmacShaKeyFor(key.getBytes());
+    @Value("${secret}")
+    private String key;
+    private SecretKey secretKey;
+
+    @PostConstruct
+    public void init() {
+        secretKey = Keys.hmacShaKeyFor(key.getBytes());
+    }
 
     public String generateToken(Authentication authentication) {
         long now = (new Date()).getTime();
@@ -40,6 +41,9 @@ public class TokenProvider {
         log.info(authorities);
 
         Date accessTokenExpiresIn = new Date(now + 86400000);
+
+        log.info(secretKey.toString());
+
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
@@ -47,6 +51,8 @@ public class TokenProvider {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
+
+
 
     public Authentication getAuthentication(String token) {
         Claims claims = parseClaims(token);
@@ -66,18 +72,21 @@ public class TokenProvider {
                 claims.get("auth").toString()));
     }
 
-    public boolean validateToken(String token) throws JwtAuthenticationException {
+    public boolean validateToken(String token)  {
 
-        if (token == null || token.length() == 0) {
+        try {
+            Claims claims = parseClaims(token);
+            System.out.println(claims.get("auth").toString());
+            return claims.getExpiration().after(new Date());
+        } catch (Exception e) {
+            log.error("Token Validate Error.");
             return false;
         }
-        Claims claims = parseClaims(token);
-        System.out.println(claims.get("auth").toString());
-        return claims.getExpiration().after(new Date());
     }
 
     // accessToken
     private Claims parseClaims(String accessToken) {
+        log.info(secretKey.toString());
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(secretKey)

@@ -1,4 +1,4 @@
-package pickle_time.pickle_time.global.auth.service;
+package pickle_time.pickle_time.global.auth;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import pickle_time.pickle_time.User.Repository.UserRepository;
 import pickle_time.pickle_time.User.model.Users;
-import pickle_time.pickle_time.global.auth.detail.PrincipalDetails;
+import pickle_time.pickle_time.global.auth.oauth.ProviderType;
 
 @Service
 public class UserDetailService implements UserDetailsService {
@@ -20,7 +20,7 @@ public class UserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Users user= userRepository.findByEmailAndSocialType(username, "GENERAL").orElseThrow(() -> new IllegalArgumentException("해당 계정이 존재하지 않습니다"));
+        Users user= userRepository.findByEmailAndProviderType(username, ProviderType.GENERAL).orElseThrow(() -> new IllegalArgumentException("해당 계정이 존재하지 않습니다"));
         return new PrincipalDetails(user);
     }
 }

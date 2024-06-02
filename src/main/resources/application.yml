@@ -1,4 +1,7 @@
 spring:
+  config:
+    import: "classpath:application-auth.yml"
+
   datasource:
     url: jdbc:h2:tcp://localhost/~/test
     username: sa
@@ -21,7 +24,7 @@ spring:
       client:
         registration:
           kakao:
-            client-id: 86a8d081a1751bfd62c3c49e7d2c3f72
+            client-id: ${kakao.client-id}
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
@@ -38,3 +41,5 @@ spring:
             user-name-attribute: id # 유저 정보 조회 시 반환되는 최상위 필드명으로 해야 한다.
 logging.level:
   org.hibernate.SQL: debug
+
+secret: ${jwt.secret}

@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import pickle_time.pickle_time.Review.model.Review;
 import pickle_time.pickle_time.User.model.Users;
-import pickle_time.pickle_time.Participant.Participant;
+import pickle_time.pickle_time.Participant.model.Participant;
 import pickle_time.pickle_time.global.entity.BaseEntity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class Pickle extends BaseEntity {
 
     @OneToMany
     @JoinColumn(name = "pickleId")
-    private List<Participant> participants = new ArrayList<>();
+    private List<Participant> participants = new ArrayList<>(); // 피클에 참여하는 참여자
 
     @Column(name = "title")
     private String title;
@@ -41,7 +42,7 @@ public class Pickle extends BaseEntity {
     private String content;
 
     @Column(name = "viewCount")
-    private int viewCount;
+    private Integer viewCount;
 
     @Column(name = "latitude")
     private double latitude;
@@ -50,15 +51,41 @@ public class Pickle extends BaseEntity {
     private double longitude;
 
     @Column(name = "capacity")
-    private Integer capacity;
+    private Integer capacity;   // 인원
 
+    @Column(name = "pickleType")
+    @Enumerated(EnumType.STRING)
+    private PickleType pickleType;
+
+    @Column(name = "startDate")
+    private LocalDate startDate;
+
+    @Column(name = "endDate")
+    private LocalDate endDate;
+
+    @Column(name = "price")
+    private Integer price;
+
+    @Column(name = "auth")
+    private Integer auth;
+
+    @Column(name = "category")
+    private String category;
+
+    @Column(name = "pickleStatus")
     @Enumerated(EnumType.STRING)
     private PickleStatus pickleStatus;
+
 
     @OneToMany(mappedBy = "pickle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
-    public void update(String title, String content, double latitude, double longitude, Integer capacity) {
+
+
+    public void pickleUpdate(String title, String content, double latitude, double longitude,
+                       PickleType pickleType, LocalDate startDate, LocalDate endDate, Integer price,
+                       Integer auth, String category, Integer capacity) {
+
         if (title != null) {
             this.title = title;
         }
@@ -71,10 +98,29 @@ public class Pickle extends BaseEntity {
         if (longitude >= MIN_LONGITUDE && longitude <= MAX_LONGITUDE) {
             this.longitude = longitude;
         }
+        if (pickleType != null) {
+            this.pickleType = pickleType;
+        }
+        if (startDate != null) {
+            this.startDate = startDate;
+        }
+        if (endDate != null) {
+            this.endDate = endDate;
+        }
+        if (price != null) {
+            this.price = price;
+        }
+        if (auth != null) {
+            this.auth = auth;
+        }
+        if (category != null) {
+            this.category = category;
+        }
         if (capacity != null) {
             this.capacity = capacity;
         }
     }
+
 
     public void changeStatus(PickleStatus pickleStatus) {
         this.pickleStatus = pickleStatus;
