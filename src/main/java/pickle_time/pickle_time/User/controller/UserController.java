@@ -1,5 +1,7 @@
 package pickle_time.pickle_time.User.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+@Tag(name = "User", description = "User 관련 API")
 @RestController
 @RequiredArgsConstructor
 //@PreAuthorize("hasRole('ROLE_USER')")
@@ -34,17 +38,32 @@ public class UserController {
 
     private final UserService userService;
 
+
+    @Operation(
+            summary = "회원가입",
+            description = "회원가입"
+    )
     @PostMapping("/join")
     public ResponseEntity<ApiResponse<String>> join(@Valid @RequestBody UserJoinRequest userJoinRequest) {
         userService.join(userJoinRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "회원가입 성공했습니다.", null));
     }
 
+
+    @Operation(
+            summary = "로그인",
+            description = "일반 로그인"
+    )
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<UserLoginResponse>> login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
         return ResponseEntity.ok(new ApiResponse<>(true,new UserLoginResponse(userService.login(userLoginRequest)), null));
     }
 
+
+    @Operation(
+            summary = "자기 정보",
+            description = "로그인한 유저의 정보를 조회"
+    )
     @GetMapping
     public ResponseEntity<?> getMe() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -59,6 +78,12 @@ public class UserController {
         return ResponseEntity.ok(new ApiResponse<>(true, userInfoResponse, null));
     }
 
+
+
+    @Operation(
+            summary = "찜 목록",
+            description = "로그인한 유저의 짬 목록 조회"
+    )
     @GetMapping("/pickle")
     public ResponseEntity<?> getMyScrap() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -71,6 +96,11 @@ public class UserController {
         return ResponseEntity.ok(new ApiResponse<>(true, new UserScrapResponse(userId, scrapResponses), null));
     }
 
+
+    @Operation(
+            summary = "자기 정보 수정",
+            description = "로그인한 유저의 정보를 수정"
+    )
     @PutMapping
     public ResponseEntity<?> updateMe(@Valid @RequestBody UserUpdateRequest userUpdateRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -81,6 +111,11 @@ public class UserController {
         return ResponseEntity.ok(new ApiResponse<>(true,userProfileResponse,null));
     }
 
+
+    @Operation(
+            summary = "회원 탈퇴",
+            description = "회원 탈퇴"
+    )
     @DeleteMapping
     public ResponseEntity<?> deleteMe() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
