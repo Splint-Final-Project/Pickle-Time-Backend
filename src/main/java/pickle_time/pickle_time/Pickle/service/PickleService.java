@@ -74,11 +74,9 @@ public class PickleService {
         return pickleRepository.save(pickle);
     }
 
-    public List<Pickle> findPicklesByUserParticipation(Long userId) {
-//        userRepository.findById(userId)
-//                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-        return pickleRepository.findByParticipantsUserId(userId);
-    }
+//    public List<Pickle> findPicklesByUserParticipation(Long userId) {
+//        return pickleRepository.findByParticipantsUserId(userId);
+//    }
     /*
     public List<Pickle> findPicklesByUserParticipation(Long userId) {
         List<Participant> participants = participantRepository.findByUsersId(userId);
@@ -90,7 +88,7 @@ public class PickleService {
      */
 
     public Pickle endPickle(Long id) {
-        return updatePickleStatus(id, PickleStatus.End);
+        return updatePickleStatus(id, PickleStatus.END);
     }
 
     public void deletePickle(Long id) {

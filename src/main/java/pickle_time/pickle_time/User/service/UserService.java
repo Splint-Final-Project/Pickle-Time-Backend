@@ -2,10 +2,13 @@ package pickle_time.pickle_time.User.service;
 
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pickle_time.pickle_time.Scrap.model.Scrap;
+import pickle_time.pickle_time.Scrap.repository.ScrapRepository;
 import pickle_time.pickle_time.User.Role;
 import pickle_time.pickle_time.global.auth.PrincipalDetails;
 import pickle_time.pickle_time.global.auth.UserDetailService;
@@ -19,14 +22,17 @@ import pickle_time.pickle_time.User.dto.request.UserUpdateRequest;
 import pickle_time.pickle_time.global.auth.jwt.TokenProvider;
 import pickle_time.pickle_time.global.auth.oauth.ProviderType;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor // final 붙으면 autowire 됨
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ScrapRepository scrapRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserDetailService userDetailService;
     private final TokenProvider tokenProvider;
@@ -103,12 +109,19 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public List<Scrap> findScrapsById(Long userId) {
+        return scrapRepository.findByUserId(userId);
+    }
+
 
     public UserProfileResponse updateUsers(Long id, UserUpdateRequest userUpdateRequest) {
         Users users = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
+        System.out.println(userUpdateRequest.nickname());
         users.update(userUpdateRequest.nickname(), userUpdateRequest.company(), userUpdateRequest.imageUrl());
+
+
         userRepository.save(users);
 
         return new UserProfileResponse(users.getNickname(), users.getEmail(), users.getCompany(), users.getImageUrl());

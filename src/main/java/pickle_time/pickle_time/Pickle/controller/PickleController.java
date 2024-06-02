@@ -3,6 +3,9 @@ package pickle_time.pickle_time.Pickle.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import pickle_time.pickle_time.Pickle.dto.request.CreatePickleRequest;
 import pickle_time.pickle_time.Pickle.dto.request.UpdatePickleRequest;
@@ -28,8 +31,11 @@ public class PickleController {
     private final ReviewService reviewService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<String>> createPickle(Long id, @Valid @RequestBody CreatePickleRequest request) {
-        pickleService.createPickle(id, request);
+    public ResponseEntity<ApiResponse<String>> createPickle( @Valid @RequestBody CreatePickleRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        Long userId = Long.parseLong(userDetails.getUsername());
+        pickleService.createPickle(userId, request);
         return ResponseEntity.ok(new ApiResponse<>(true, "피클 생성이 완료되었습니다.", null));
     }
 
@@ -87,10 +93,10 @@ public class PickleController {
     }
 
 
-    @GetMapping("/user/{userId}/myPickles")
-    public ResponseEntity<ApiResponse<List<Pickle>>> getAllMyPickles(@PathVariable Long userId) {
-        List<Pickle> pickles = pickleService.findPicklesByUserParticipation(userId);
-        return ResponseEntity.ok(new ApiResponse<>(true, pickles, null));
-    }
+//    @GetMapping("/user/{userId}/myPickles")
+//    public ResponseEntity<ApiResponse<List<Pickle>>> getAllMyPickles(@PathVariable Long userId) {
+//        List<Pickle> pickles = pickleService.findPicklesByUserParticipation(userId);
+//        return ResponseEntity.ok(new ApiResponse<>(true, pickles, null));
+//    }
 
 }
