@@ -1,5 +1,6 @@
 package pickle_time.pickle_time.Review.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import pickle_time.pickle_time.global.entity.BaseEntity;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "pickle"})
 public class Review extends BaseEntity {
 
     @Id

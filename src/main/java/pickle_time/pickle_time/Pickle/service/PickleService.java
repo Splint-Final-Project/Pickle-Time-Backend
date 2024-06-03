@@ -5,14 +5,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pickle_time.pickle_time.Pickle.dto.request.CreatePickleRequest;
 import pickle_time.pickle_time.Pickle.dto.request.UpdatePickleRequest;
+import pickle_time.pickle_time.Pickle.dto.response.PickleInfoResponse;
 import pickle_time.pickle_time.Pickle.model.Pickle;
 import pickle_time.pickle_time.Pickle.model.PickleStatus;
 import pickle_time.pickle_time.Pickle.repository.PickleRepository;
+import pickle_time.pickle_time.Review.dto.response.ReviewInfoResponse;
+import pickle_time.pickle_time.Review.model.Review;
 import pickle_time.pickle_time.User.Repository.UserRepository;
+import pickle_time.pickle_time.User.dto.response.UserInfoResponse;
 import pickle_time.pickle_time.User.model.Users;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
@@ -73,6 +78,8 @@ public class PickleService {
         pickle.changeStatus(status);
         return pickleRepository.save(pickle);
     }
+
+
 
 //    public List<Pickle> findPicklesByUserParticipation(Long userId) {
 //        return pickleRepository.findByParticipantsUserId(userId);

@@ -76,7 +76,7 @@ public class UserController {
 
         List<Scrap> scraps = user.getScraps();
         List<ScrapResponse> scrapResponses = scraps.stream().map(scrap -> new ScrapResponse(scrap.getPickle().getTitle(), scrap.getPickle().getId())).toList();
-        UserInfoResponse userInfoResponse = new UserInfoResponse(user.getId(), user.getNickname(), user.getRole(), user.getProviderType(), user.getCompany(), user.getImageUrl(), scrapResponses);
+        UserInfoResponse userInfoResponse = new UserInfoResponse(user.getId(), user.getEmail(),user.getNickname(), user.getRole(), user.getProviderType(), user.getCompany(), user.getImageUrl(), scrapResponses);
         return ResponseEntity.ok(new ApiResponse<>(true, userInfoResponse, null));
     }
 
