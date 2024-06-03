@@ -4,13 +4,16 @@ spring:
   config:
     import: "classpath:application-auth.yml"
   datasource:
-    url: jdbc:h2:tcp://localhost/~/test
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:tcp://localhost/~/test
+    url: jdbc:mysql://localhost:3306/pickle_time?serverTimezone=Asia/Seoul
+#    username: sa
+    username: root
+    password: 251414
+#    driver-class-name: org.h2.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+#    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
     properties:
@@ -50,6 +53,21 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id # 유저 정보 조회 시 반환되는 최상위 필드명으로 해야 한다.
 
+springdoc:
+  version: '@project.version@'
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+    doc-expansion: none
+  paths-to-match:
+    - /api/v1/**
 logging.level:
   org.hibernate.SQL: debug
   

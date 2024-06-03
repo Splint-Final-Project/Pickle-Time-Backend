@@ -34,7 +34,7 @@ public class SecurityConfig {
 
 
             "/", "/oauth2/authorization/**",  "api/v1/user/join", "/signup", "/auth/success", "api/v1/user/login",
-            "/verify_iamport/*", "/api/v1/user/messages/"
+            "/verify_iamport/*", "/api-docs/**", "/swagger-resources/**", "/swagger-ui.html", "/swagger-ui/**",
     };
 
     @Bean
