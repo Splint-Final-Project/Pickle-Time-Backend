@@ -1,7 +1,6 @@
 package pickle_time.pickle_time.Pickle.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,16 +11,16 @@ import pickle_time.pickle_time.Pickle.dto.request.UpdatePickleRequest;
 import pickle_time.pickle_time.Pickle.model.Pickle;
 import pickle_time.pickle_time.Pickle.model.PickleStatus;
 import pickle_time.pickle_time.Pickle.service.PickleService;
-import pickle_time.pickle_time.Review.dto.ReviewRequest;
+import pickle_time.pickle_time.Review.dto.request.CreateReviewRequest;
 import pickle_time.pickle_time.Review.model.Review;
 import pickle_time.pickle_time.Review.service.ReviewService;
-import pickle_time.pickle_time.User.model.Users;
 import pickle_time.pickle_time.global.dto.ApiResponse;
 
 import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -77,7 +76,7 @@ public class PickleController {
     }
 
     @PostMapping("/{pickleId}/review")
-    public ResponseEntity<ApiResponse<Review>> createReview(@PathVariable Long pickleId, @RequestParam Long userId, @RequestBody @Valid ReviewRequest request) {
+    public ResponseEntity<ApiResponse<Review>> createReview(@PathVariable Long pickleId, @RequestParam Long userId, @RequestBody @Valid CreateReviewRequest request) {
         Review review = reviewService.createReview(pickleId, userId, request);
         return ResponseEntity.ok(new ApiResponse<>(true, review, null));
     }
@@ -93,6 +92,8 @@ public class PickleController {
         reviewService.deleteReview(reviewId, userId);
         return ResponseEntity.ok(new ApiResponse<>(true, "리뷰가 삭제되었습니다.", null));
     }
+
+
 
 
 //    @GetMapping("/user/{userId}/myPickles")
