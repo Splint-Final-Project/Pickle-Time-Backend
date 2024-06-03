@@ -65,9 +65,9 @@ public class UserService {
         if (checkEmailDuplicate(request.email(), ProviderType.GENERAL)) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
-        // if (checkNicknameDuplicate(request.nickname())) {
-        //     throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
-        // }
+//        if (checkNicknameDuplicate(request.nickname())) {
+//            throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+//        }
         if (!request.password().equals(request.checkPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
@@ -76,9 +76,8 @@ public class UserService {
 
         Users users = Users.builder()
                 .password(encodedPassword)
-                // .nickname(request.nickname())
+//                .nickname(request.nickname())
                 .email(request.email())
-
                 // .company(request.company())
                 // .imageUrl(request.imageUrl())
                 .role(Role.ROLE_USER)

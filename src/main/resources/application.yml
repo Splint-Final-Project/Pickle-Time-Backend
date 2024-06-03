@@ -1,7 +1,8 @@
 spring:
+#  config:
+#    import: optional:file:.env[.properties]
   config:
     import: "classpath:application-auth.yml"
-
   datasource:
 #    url: jdbc:h2:tcp://localhost/~/test
     url: jdbc:mysql://localhost:3306/pickle_time?serverTimezone=Asia/Seoul
@@ -14,12 +15,21 @@ spring:
 #    database-platform: org.hibernate.dialect.H2Dialect
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
 
-  #        dialect: org.hibernate.dialect.H2Dialect
+  # security:
+  #   user:
+  #     name: user
+  #     password: 1234
+  data:
+    mongodb:
+      uri: mongodb+srv://whai:RAf!eWr-bAmf!L5@cluster0.cefghb6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: chat_app
+
+#        dialect: org.hibernate.dialect.H2Dialect
 #        show_sql: true
 
   security:
@@ -60,5 +70,20 @@ springdoc:
     - /api/v1/**
 logging.level:
   org.hibernate.SQL: debug
+  
+server:
+  port: 8080
+  
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        
+jwt:
+  secret: lVUiTGbxj4xgW5orFkfdNP72414P5q7ysgJi0rBSY9LwIWkjMY9VrxXV6BdF3bR+wpUgx/vQniz5lqNPbPwRPA==
+
+  expiration: 86400000  # 1 day in milliseconds
 
 secret: ${jwt.secret}
+
